@@ -2,6 +2,8 @@
 
 namespace MvcLite\Router\Engine;
 
+use MvcLite\Router\Engine\Exceptions\UndefinedRouteException;
+
 /**
  * Router main class.
  * Allows developer to create their own routes.
@@ -46,7 +48,12 @@ class Router
      */
     public static function getRouteByPath(string $path): Route
     {
-        return self::$routes[$path];
+        if (!in_array($path, array_keys(self::getRoutes())))
+        {
+            $error = new UndefinedRouteException();
+            $error->render();
+        }
+        return self::getRoutes()[$path];
     }
 
     /**
