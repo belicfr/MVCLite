@@ -1,0 +1,17 @@
+{
+    "name": "belicfr/mvc-lite",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "MvcLite\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jonathan",
+            "email": "96206878+belicfr@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
