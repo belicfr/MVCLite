@@ -2,6 +2,8 @@
 
 namespace MvcLite\Controllers;
 
+use MvcLite\Views\Engine\View;
+
 class TestController
 {
     public function __construct()
@@ -11,6 +13,6 @@ class TestController
 
     public function renderPage(): void
     {
-        echo "Hello, World";
+        View::render("HelloWorld", [ "test" => 1 ]);
     }
 }
