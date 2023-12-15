@@ -1,14 +1,16 @@
 <?php
 
+use MvcLite\Router\Engine\Exceptions\NoneRouteException;
 use MvcLite\Router\Engine\Router;
 
 require_once "vendor/autoload.php";
+require_once "src/Router/reserved.php";
 require_once "src/Router/routes.php";
 
 if (!isset($_GET["route"]))
 {
-    echo "<strong>MVCLite Fatal Error:</strong>&nbsp;No one route is used.";
-    die;
+    $error = new NoneRouteException();
+    $error->render();
 }
 
 const ROUTE_PATH_PREFIX = '/';
