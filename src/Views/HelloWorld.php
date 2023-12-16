@@ -14,7 +14,7 @@
 </h1>
 
 <p>
-    <?= $test ?>
+    My name is John Doe!
 </p>
 
 </body>
