@@ -9,4 +9,4 @@
 use MvcLite\Controllers\TestController;
 use MvcLite\Router\Engine\Router;
 
-Router::get("/test", TestController::class, "renderPage");
+// Create your own routes!
