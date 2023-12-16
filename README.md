@@ -145,5 +145,5 @@ Router::get("/hello-world", HelloWorldController::class, "renderPage");
 ```
 
 **Your first route is created and ready:** when you open your website on your
-favorite browser with `https://domainname.test/hello-world` as URL, `Hello, World!`
+favorite browser with `https://[DOMAIN_NAME]/hello-world` as URL, `Hello, World!`
 will be displayed on your page.
