@@ -2,6 +2,7 @@
 
 namespace MvcLite\Router\Engine;
 
+use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Router\Engine\Exceptions\UndefinedRouteException;
 
 /**
@@ -62,6 +63,25 @@ class Router
     public static function useRoute(Route $route): void
     {
         $controllerInstance = new ($route->getController());
+
         call_user_func([$controllerInstance, $route->getMethod()]);
+    }
+
+    /**
+     * Attempt to return the route object from its name.
+     *
+     * @param string $routeName
+     * @return Route|null Route object if exists or NULL
+     */
+    public static function getRouteByName(string $routeName): ?Route
+    {
+        $route = array_filter(self::$routes, function (Route $route) use ($routeName)
+        {
+            return $route->getName() == $routeName;
+        });
+
+        reset($route);
+
+        return current($route) ?: null;
     }
 }
