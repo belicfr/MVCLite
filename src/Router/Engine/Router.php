@@ -32,7 +32,20 @@ class Router
      */
     public static function get(string $path, string $controller, string $method): Route
     {
-        return self::$routes[$path] = new Route(self::GET_METHOD, $path, $controller, $method);
+        return self::$routes[] = new Route(self::GET_METHOD, $path, $controller, $method);
+    }
+
+    /**
+     * Create a POST route.
+     *
+     * @param string $path URL path used by route
+     * @param string $controller Controller used by route
+     * @param string $method Controller method called by route
+     * @return Route Created route object
+     */
+    public static function post(string $path, string $controller, string $method): Route
+    {
+        return self::$routes[] = new Route(self::POST_METHOD, $path, $controller, $method);
     }
 
     /**
@@ -49,12 +62,29 @@ class Router
      */
     public static function getRouteByPath(string $path): Route
     {
-        if (!in_array($path, array_keys(self::getRoutes())))
+        $route = array_filter(self::$routes, function (Route $route) use ($path)
+        {
+            return $route->getPath() == $path
+                && $route->getHttpMethod() == self::getCurrentHttpMethod();
+        });
+
+        if (!count($route))
         {
             $error = new UndefinedRouteException();
             $error->render();
         }
-        return self::getRoutes()[$path];
+
+        reset($route);
+
+        $route = current($route);
+
+        if ($route->getHttpMethod() !== self::getCurrentHttpMethod())
+        {
+            echo "WRONG HTTP METHOD!!";
+            die;
+        }
+
+        return $route;
     }
 
     /**
@@ -63,7 +93,6 @@ class Router
     public static function useRoute(Route $route): void
     {
         $controllerInstance = new ($route->getController());
-
         call_user_func([$controllerInstance, $route->getMethod()]);
     }
 
@@ -77,11 +106,19 @@ class Router
     {
         $route = array_filter(self::$routes, function (Route $route) use ($routeName)
         {
-            return $route->getName() == $routeName;
+            return $route->getName() == $routeName
+                && $route->getHttpMethod() == self::getCurrentHttpMethod();
         });
 
         reset($route);
 
         return current($route) ?: null;
+    }
+
+    private static function getCurrentHttpMethod(): string
+    {
+        return count($_POST)
+            ? self::POST_METHOD
+            : self::GET_METHOD;
     }
 }
