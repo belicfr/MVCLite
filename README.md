@@ -114,10 +114,9 @@ To begin with **MVCLite**, we only need to edit `src/Router/routes.php`.
 This file allows to create our routes.
 
 In **MVCLite**, a route is represented by **five** information:
-- **The HTTP method:** `GET` [or `POST`].
+- **The HTTP method:** `GET`.
 - **The route path:** `https://example.com/[route_path]`.
-- **The controller:** the view linked controller. 
-[INSERT CONTROLLER SECTION LINK].
+- **The controller:** the view linked controller.
 - **The controller method:** the called controller method.
 - **The name:** it is **_optional_**, but it makes router easy to use and maintain.
 By using it in route calling, you can change the route path without change it
@@ -127,6 +126,7 @@ for each route calling, because you will use it to use your route.
 
 - Open `src/Router/routes.php`.
 - Put the route creation line at the file ending:
+
 ```php
 <?php
 
@@ -136,7 +136,7 @@ for each route calling, because you will use it to use your route.
  */
 
 
-use MvcLite\Controllers\TestController;
+use MvcLite\Controllers\HelloController;
 use MvcLite\Router\Engine\Router;
 
 // Let's create our route!
