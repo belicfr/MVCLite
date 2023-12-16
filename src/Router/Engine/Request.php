@@ -4,6 +4,7 @@ namespace MvcLite\Router\Engine;
 
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Router\Engine\Exceptions\UndefinedInputException;
+use MvcLite\Router\Engine\Exceptions\UndefinedParameterException;
 
 /**
  * Request manager class.
@@ -12,12 +13,29 @@ use MvcLite\Router\Engine\Exceptions\UndefinedInputException;
  */
 class Request
 {
+    /** Current request URI. */
+    private string $uri;
+
+    /** Current request inputs. */
+    private array $inputs;
+
+    /** Current request parameters. */
+    private array $parameters;
+
+    public function __construct()
+    {
+        $this->uri = $_SERVER["REQUEST_URI"];
+
+        $this->saveInputs();
+        $this->saveParameters();
+    }
+
     /**
      * Gets $_POST values and returns its neutralized version.
      *
-     * @return array
+     * @return array Inputs array
      */
-    public static function getInputs(): array
+    private function saveInputs(): array
     {
         $inputs = [];
 
@@ -26,21 +44,75 @@ class Request
             $inputs[$inputKey] = htmlspecialchars($inputValue);
         }
 
-        return $inputs;
+        return $this->inputs = $inputs;
     }
 
-    public static function getInput(string $key, bool $neutralize = true): string
+    /**
+     * @return array Current request inputs
+     */
+    public function getInputs(): array
     {
-        $input = self::getInputs()[$key];
+        return $this->inputs;
+    }
 
-        if ($input === null)
+    /**
+     * @param string $key Input key
+     * @param bool $neutralize If input value must be neutralized
+     * @return string Input value
+     */
+    public function getInput(string $key, bool $neutralize = true): string
+    {
+        if (!in_array($key, array_keys($this->getInputs())))
         {
             $error = new UndefinedInputException($key);
             $error->render();
         }
 
+        $input = $this->getInputs()[$key];
+
         return $neutralize
             ? $input
             : htmlspecialchars_decode($input);
+    }
+
+    /**
+     * @return string Decoded current request URI
+     */
+    public function getUri(): string
+    {
+        return urldecode($this->uri);
+    }
+
+    /**
+     * Gets $_GET values and returns them.
+     *
+     * @return array Parameters array
+     */
+    private function saveParameters(): array
+    {
+        return $this->parameters = $_GET;
+    }
+
+    /**
+     * @return array Current request parameters
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @param string $key Parameter key
+     * @return string Parameter value
+     */
+    public function getParameter(string $key): string
+    {
+        if (!in_array($key, array_keys($this->getParameters())))
+        {
+            $error = new UndefinedParameterException($key);
+            $error->render();
+        }
+
+        return $this->getParameters()[$key];
     }
 }
