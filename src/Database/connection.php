@@ -17,8 +17,8 @@ const DATABASE_CREDENTIALS = [
 
     "host"          =>  "localhost",
     "port"          =>  "3306",
-    "name"          =>  "mvclite_test",
-    "user"          =>  "root",
+    "name"          =>  "",
+    "user"          =>  "",
     "password"      =>  ""
 
 ];
