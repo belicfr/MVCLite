@@ -8,7 +8,7 @@ class View
 {
     public static function render(string $viewPath, array $props = [])
     {
-        $absoluteViewPath = "./src/Viewsc/$viewPath.php";
+        $absoluteViewPath = "./src/Views/$viewPath.php";
 
         if (!file_exists($absoluteViewPath))
         {
