@@ -2,10 +2,15 @@
 
 namespace MvcLite\Controllers;
 
-class HelloController
+use MvcLite\Controllers\Engine\Controller;
+use MvcLite\Middlewares\TestMiddleware;
+
+class HelloController extends Controller
 {
     public function __construct()
     {
+        parent::__construct();
+
         // Empty constructor.
     }
 
