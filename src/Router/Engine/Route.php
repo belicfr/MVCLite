@@ -2,6 +2,9 @@
 
 namespace MvcLite\Router\Engine;
 
+use MvcLite\Engine\DevelopmentUtilities\Debug;
+use MvcLite\Router\Engine\Exceptions\AlreadyUsedRouteNameException;
+
 /**
  * Class that represents a route and its own information.
  *
@@ -20,6 +23,21 @@ class Route
 
     /** Controller method called by current route. */
     private string $method;
+
+    /** Route name. */
+    private ?string $name;
+
+    public function __construct(string $httpMethod,
+                                string $path,
+                                string $controller,
+                                string $method)
+    {
+        $this->httpMethod = $httpMethod;
+        $this->path = $path;
+        $this->controller = $controller;
+        $this->method = $method;
+        $this->name = null;
+    }
 
     /**
      * @return string Used HTTP method
@@ -53,14 +71,25 @@ class Route
         return $this->method;
     }
 
-    public function __construct(string $httpMethod,
-                                string $path,
-                                string $controller,
-                                string $method)
+    /**
+     * @return string|null Route name
+     */
+    public function getName(): ?string
     {
-        $this->httpMethod = $httpMethod;
-        $this->path = $path;
-        $this->controller = $controller;
-        $this->method = $method;
+        return $this->name;
+    }
+
+    /**
+     * @param string $name Route name
+     */
+    public function setName(string $name): void
+    {
+        if (Router::getRouteByName($name) !== null)
+        {
+            $error = new AlreadyUsedRouteNameException($name);
+            $error->render();
+        }
+
+        $this->name = $name;
     }
 }
