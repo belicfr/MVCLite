@@ -1,11 +1,20 @@
 # MVCLite official documentation
 
+It's time to say **Hello, MVCLite**!
+
+**MVCLite** is a client-side PHP framework whose watchwords are **lightness**, 
+**ease of use** and **security**.
+
 ## Framework structure
 ```
 /
     src/
         Controllers/
+            InternalControllers/
             ... controllers classes
+            
+        Engine/
+            ... MVCLite engine general classes
         
         Models/
             ... models classes
@@ -15,14 +24,126 @@
             
         Router/
             Engine/
-                Route.php
-                Router.php
+                ... router engine classes
             
             routes.php
         
         Views/
+            Engine/
+                ... views engine classes
+                
             ... views files
     
     .htaccess
     index.php
 ```
+
+## MVC pattern
+
+In simple terms, **MVC** is a software conception pattern that which includes 
+**three** principal entities: **Model - View - Controller**.
+
+**Each has its own specific tasks:**
+- **Model:**
+  - Data management.
+  - It represents an entity, for example Vehicle may be a model that represents 
+  a vehicle in an application.
+- **View:**
+  - It is an interface of the application, for example Index may represent the 
+  homepage of your application with static and dynamic data. It displays passed
+  data from controller.
+- **Controller:**
+  - It is **THE** intermediate between **model** and **view**.
+  - It uses **model** data, apply the logic of the application and load **view**.
+
+**We have only touched on the superficial.**\
+**Learn more:** [MDN Glossary: MVC pattern](https://developer.mozilla.org/fr/docs/Glossary/MVC)
+
+## Get started
+
+### Installation
+
+- Clone [belicfr/mvclite](https://github.com/belicfr/mvclite) repository.
+- ...
+
+### Let's start with controllers
+
+As you can see, **controllers** are a pillar of a **MVC** application.
+We must create them before all.
+
+**Let's create our first controller!**
+
+- Open folder `src/Controllers`.
+- Create the controller class `HelloWorldController.php`.
+- Put the following code into the created class:
+```php
+<?php
+
+namespace MvcLite\Controllers;
+
+/**
+ * The controller used by the tutorial.
+ */
+class TestController
+{
+    public function __construct()
+    {
+        // Empty constructor.
+        // We will see the constructor functions more later.
+    }
+
+    /**
+     * The called controller method.
+     */
+    public function renderPage(): void
+    {
+        echo "Hello, World!";
+    }
+}
+```
+
+**Your first controller is ready:** when `renderPage()` method is called, 
+it will display `Hello, World!` on your page.
+
+### Let's start with router
+
+The router is **THE** intermediate between client and controllers. It plays
+the dispatch role into the application.
+
+To begin with **MVCLite**, we only need to edit `src/Router/routes.php`.
+This file allows to create our routes.
+
+In **MVCLite**, a route is represented by **five** information:
+- **The HTTP method:** `GET` [or `POST`].
+- **The route path:** `https://example.com/[route_path]`.
+- **The controller:** the view linked controller. 
+[INSERT CONTROLLER SECTION LINK].
+- **The controller method:** the called controller method.
+- **The name:** it is **_optional_**, but it makes router easy to use and maintain.
+By using it in route calling, you can change the route path without change it
+for each route calling, because you will use it to use your route.
+
+**Let's create our first route!**
+
+- Open `src/Router/routes.php`.
+- Put the route creation line at the file ending:
+```php
+<?php
+
+/*
+ * routes.php
+ * MVCLite framework by belicfr
+ */
+
+
+use MvcLite\Controllers\TestController;
+use MvcLite\Router\Engine\Router;
+
+// Let's create our route!
+// Here it is 3 arguments: path, controller class, controller method.
+Router::get("/hello-world", HelloWorldController::class, "renderPage");
+```
+
+**Your first route is created and ready:** when you open your website on your
+favorite browser with `https://domainname.test/hello-world` as URL, `Hello, World!`
+will be displayed on your page.
