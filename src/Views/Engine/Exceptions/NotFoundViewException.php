@@ -10,7 +10,7 @@ class NotFoundViewException extends MvcLiteException
     {
         parent::__construct();
 
-        $this->code = "0x1001";
+        $this->code = "MVCLITE_NO_LINKED_VIEW";
         $this->message = "No one view is located to given path.";
     }
 }

@@ -3,6 +3,7 @@
 namespace MvcLite\Engine;
 
 use Exception;
+use MvcLite\Engine\InternalResources\Storage;
 
 class MvcLiteException extends Exception
 {
@@ -29,7 +30,7 @@ class MvcLiteException extends Exception
     {
         parent::__construct();
 
-        $this->code = "0x1000";
+        $this->code = "MVCLITE_UNKNOWN_ERROR";
         $this->message = "An unknwon error is thrown by MVCLite.";
 
         $this->title = "MVCLite Fatal Error";
@@ -45,28 +46,27 @@ class MvcLiteException extends Exception
         $file = $this->getFile();
         $title = $this->getTitle();
 
-        $html = "<link rel='stylesheet' href='/core/exceptions/css/rendering' />
-                  <div mvclite-dialog>
-                      <div class='dialog-window'>
-                          <h1>
-                              $title
-                          </h1>
-     
-                          <hr />
-                          
-                          <p>
-                              <span class='bold'>Code:</span>
-                              <span class='mono'>$code</span>
-                          </p>
-                          
-                          <p>
-                              <span class='bold'>File:</span>
-                              <span class='mono'>$file</span>
-                          </p>
-                          
-                          " . ($message ? "<p class='mono message'>$message</p>" : "") . "
-                      </div>
-                  </div>";
+        $html = "<div mvclite-dialog>
+                     <div class='dialog-window'>
+                         <h1>
+                             $title
+                         </h1>
+    
+                         <hr />
+                         
+                         <p>
+                             <span class='bold'>Code:</span>
+                             <span class='mono'>$code</span>
+                         </p>
+                         
+                         <p>
+                             <span class='bold'>File:</span>
+                             <span class='mono'>$file</span>
+                         </p>
+                         
+                         " . ($message ? "<p class='mono message'>$message</p>" : "") . "
+                     </div>
+                 </div>";
 
         return $html;
     }

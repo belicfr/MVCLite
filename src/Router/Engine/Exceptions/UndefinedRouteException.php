@@ -10,7 +10,7 @@ class UndefinedRouteException extends MvcLiteException
     {
         parent::__construct();
 
-        $this->code = "404";
+        $this->code = "HTTP_NOT_FOUND_404";
         $this->message = null;
 
         $this->setTitle("404 Not Found");
