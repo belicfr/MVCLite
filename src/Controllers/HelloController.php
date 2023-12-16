@@ -3,7 +3,7 @@
 namespace MvcLite\Controllers;
 
 use MvcLite\Controllers\Engine\Controller;
-use MvcLite\Middlewares\TestMiddleware;
+use MvcLite\Router\Engine\Request;
 
 class HelloController extends Controller
 {
