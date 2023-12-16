@@ -14,6 +14,8 @@ $exceptionsCss = file_get_contents(Storage::getEnginePath()
 
 echo "<style>$exceptionsCss $debugCss</style>";
 
+require_once "src/Database/connection.php";
+
 require_once "src/Router/reserved.php";
 require_once "src/Router/routes.php";
 
