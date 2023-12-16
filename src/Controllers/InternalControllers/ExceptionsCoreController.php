@@ -21,7 +21,7 @@ class ExceptionsCoreController
      */
     public function renderingCss()
     {
-        $cssFilePath = Storage::getEngineInternalResourcesPath() . "/ExceptionRendering/rendering.css";
+        $cssFilePath = Storage::getEnginePath() . "/InternalResources/ExceptionRendering/rendering.css";
         include_once $cssFilePath;
     }
 }
