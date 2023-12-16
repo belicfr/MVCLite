@@ -14,7 +14,11 @@
 </h1>
 
 <p>
-    My name is John Doe!
+    This is a new <strong>MVCLite</strong> project.
+</p>
+
+<p>
+    This view can be edited.
 </p>
 
 </body>
