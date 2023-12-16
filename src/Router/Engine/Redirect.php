@@ -9,8 +9,31 @@ namespace MvcLite\Router\Engine;
  */
 class Redirect
 {
-    public static function to(string $path): void
+    /**
+     * Redirection by route path.
+     *
+     * @param string $path Route path
+     */
+    public static function to(string $path): Redirect
     {
-        header("Location: $path");
+        $route = Router::getRouteByPath($path);
+
+        $redirection = new Redirect($route);
+        $redirection->redirect();
+
+        return $redirection;
+    }
+
+    /** Redirection route. */
+    private Route $route;
+
+    private function __construct(Route $route)
+    {
+        $this->route = $route;
+    }
+
+    private function redirect(): void
+    {
+        header("Location: " . $this->route->getPath());
     }
 }
