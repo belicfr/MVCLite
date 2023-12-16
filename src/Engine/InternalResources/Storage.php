@@ -4,8 +4,8 @@ namespace MvcLite\Engine\InternalResources;
 
 class Storage
 {
-    public static function getEngineInternalResourcesPath(): string
+    public static function getEnginePath(): string
     {
-        return $_SERVER['DOCUMENT_ROOT'] . "/src/Engine/InternalResources";
+        return $_SERVER['DOCUMENT_ROOT'] . "/src/Engine";
     }
 }
