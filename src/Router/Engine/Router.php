@@ -93,7 +93,9 @@ class Router
     public static function useRoute(Route $route): void
     {
         $controllerInstance = new ($route->getController());
-        call_user_func([$controllerInstance, $route->getMethod()]);
+        $request = new Request();
+
+        call_user_func([$controllerInstance, $route->getMethod()], $request);
     }
 
     /**
