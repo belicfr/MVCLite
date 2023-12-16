@@ -56,7 +56,7 @@ class Route
     }
 
     /**
-     * @return string Used controller
+     * @return string Used controller class
      */
     public function getController(): string
     {
