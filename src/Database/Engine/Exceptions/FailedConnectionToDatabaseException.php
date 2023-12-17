@@ -6,11 +6,11 @@ use MvcLite\Engine\MvcLiteException;
 
 class FailedConnectionToDatabaseException extends MvcLiteException
 {
-    public function __construct()
+    public function __construct(string $pdoExceptionMessage)
     {
         parent::__construct();
 
         $this->code = "MVCLITE_DB_FAILED_CONNECTION";
-        $this->message = "Failed connection attempt to database.";
+        $this->message = "<strong>Database Error:</strong> $pdoExceptionMessage.";
     }
 }
