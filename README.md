@@ -5,66 +5,7 @@ It's time to say **Hello, MVCLite**!
 **MVCLite** is a client-side PHP framework whose watchwords are **lightness**, 
 **ease of use** and **security**.
 
-## Framework structure
-```
-/
-    src/
-        Controllers/
-            InternalControllers/
-            ... controllers classes
-            
-        Engine/
-            ... MVCLite engine general classes
-        
-        Models/
-            ... models classes
-            
-        Resources/
-            ... resources files
-            
-        Router/
-            Engine/
-                ... router engine classes
-            
-            routes.php
-        
-        Views/
-            Engine/
-                ... views engine classes
-                
-            ... views files
-    
-    .htaccess
-    index.php
-```
-
-## MVC pattern
-
-In simple terms, **MVC** is a software conception pattern that which includes 
-**three** principal entities: **Model - View - Controller**.
-
-**Each has its own specific tasks:**
-- **Model:**
-  - Data management.
-  - It represents an entity, for example Vehicle may be a model that represents 
-  a vehicle in an application.
-- **View:**
-  - It is an interface of the application, for example Index may represent the 
-  homepage of your application with static and dynamic data. It displays passed
-  data from controller.
-- **Controller:**
-  - It is **THE** intermediate between **model** and **view**.
-  - It uses **model** data, apply the logic of the application and load **view**.
-
-**We have only touched on the superficial.**\
-**Learn more:** [MDN Glossary: MVC pattern](https://developer.mozilla.org/fr/docs/Glossary/MVC)
-
 ## Get started
-
-### Installation
-
-- Clone [belicfr/mvclite](https://github.com/belicfr/mvclite) repository.
-- ...
 
 ### Let's start with controllers
 
