@@ -12,7 +12,7 @@ use MvcLite\Engine\InternalResources\Storage;
     <title>Hello, World! :)</title>
 
     <?php
-    Storage::include("/Css/Example/index.css");
+    Storage::include("Css/Example/index.css");
     ?>
 </head>
 <body>
