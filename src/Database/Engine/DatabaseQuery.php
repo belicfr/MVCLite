@@ -30,7 +30,7 @@ class DatabaseQuery
         }
         catch (PDOException $e)
         {
-            $error = new FailedConnectionToDatabaseException();
+            $error = new FailedConnectionToDatabaseException($e->getMessage());
             $error->render();
         }
     }
@@ -66,5 +66,14 @@ class DatabaseQuery
     public function getAll(): array
     {
         return $this->preparation->fetchAll();
+    }
+
+    /**
+     * @return array|false Current cursor line if exists;
+     *                     else FALSE
+     */
+    public function get(): array|false
+    {
+        return $this->preparation->fetch();
     }
 }
