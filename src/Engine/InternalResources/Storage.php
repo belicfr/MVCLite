@@ -24,8 +24,11 @@ class Storage
 
     public static function include(string $relativePath, string $type = ""): string
     {
+        $relativePath = $relativePath[0] == '/'
+            ? $relativePath
+            : '/' . $relativePath;
+
         $absolutePath = self::getResourcesPath() . $relativePath;
-        $resourceFileContent = file_get_contents($absolutePath);
 
         $type = strtolower($type);
 
@@ -37,11 +40,11 @@ class Storage
 
         if ($type == "css" || preg_match(self::REGEX_CSS_FILE, $relativePath))
         {
-            $html = "<style>$resourceFileContent</style>";
+            $html = "<link rel='stylesheet' href='/src/Resources$relativePath' />";
         }
         else if ($type == "js" || preg_match(self::REGEX_JS_FILE, $relativePath))
         {
-            $html = "<script>$resourceFileContent</script>";
+            $html = "<script src='/src/Resources/$relativePath'></script>";
         }
         else
         {
@@ -50,6 +53,7 @@ class Storage
         }
 
         echo $html;
+
         return $html;
     }
 }
