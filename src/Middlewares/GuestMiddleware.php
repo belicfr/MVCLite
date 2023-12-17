@@ -2,13 +2,13 @@
 
 namespace MvcLite\Middlewares;
 
+use MvcLite\Engine\DevelopmentUtilities\Debug;
+use MvcLite\Engine\Session\Session;
 use MvcLite\Middlewares\Engine\Middleware;
 use MvcLite\Router\Engine\Redirect;
 
-class TestMiddleware extends Middleware
+class GuestMiddleware extends Middleware
 {
-    private int $i = 5;
-
     public function __construct()
     {
         parent::__construct();
@@ -18,9 +18,10 @@ class TestMiddleware extends Middleware
 
     public function run(): bool|Redirect
     {
-        if ($this->i == 1)
+        if (Session::isLogged())
         {
-            return Redirect::to("/index");
+            echo "YOU MUST BE DISCONNECTED.";
+            die;
         }
 
         return parent::run();
