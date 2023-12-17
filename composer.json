@@ -13,5 +13,8 @@
             "email": "96206878+belicfr@users.noreply.github.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-pdo": "*",
+        "symfony/console": "^7.0"
+    }
 }
