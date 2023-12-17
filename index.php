@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 use MvcLite\Engine\InternalResources\Storage;
 use MvcLite\Router\Engine\Exceptions\NoneRouteException;
 use MvcLite\Router\Engine\Router;
@@ -15,6 +17,7 @@ $exceptionsCss = file_get_contents(Storage::getEnginePath()
 echo "<style>$exceptionsCss $debugCss</style>";
 
 require_once "src/Database/connection.php";
+require_once "src/Database/authentification.php";
 
 require_once "src/Router/reserved.php";
 require_once "src/Router/routes.php";
