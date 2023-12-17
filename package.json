@@ -1,0 +1,14 @@
+{
+  "name": "festiplan",
+  "version": "1.0.0",
+  "description": "Festiplan",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "belicfr",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.3.6"
+  }
+}
