@@ -115,8 +115,7 @@ class Router
     {
         $route = array_filter(self::$routes, function (Route $route) use ($routeName)
         {
-            return $route->getName() == $routeName
-                && $route->getHttpMethod() == self::getCurrentHttpMethod();
+            return $route->getName() == $routeName;
         });
 
         reset($route);
