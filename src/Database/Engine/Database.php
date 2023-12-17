@@ -53,7 +53,7 @@ class Database
 
         return $state
             ? $database
-            : $state;
+            : false;
     }
 
     /**
