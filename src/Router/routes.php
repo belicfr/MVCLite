@@ -12,4 +12,5 @@ use MvcLite\Router\Engine\Router;
 
 Router::get("/", \MvcLite\Controllers\HelloController::class, "redirectToIndex");
 
-Router::get("/index", \MvcLite\Controllers\HelloController::class, "render");
+Router::get("/index", \MvcLite\Controllers\HelloController::class, "render")
+    ->setName("render.index");
