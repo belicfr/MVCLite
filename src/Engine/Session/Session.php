@@ -37,7 +37,9 @@ class Session
 
     public static function attemptLogin(string $login, string $password): bool
     {
-        $query = "SELECT * FROM users WHERE "
+        $query = "SELECT * FROM "
+                . AUTHENTIFICATION_COLUMNS["table"]
+                . " WHERE "
                 . AUTHENTIFICATION_COLUMNS["login"]
                 . " = ?";
 
