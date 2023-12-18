@@ -5,7 +5,7 @@
  * MVCLite by belicfr
  *
  * Please edit the connection information
- * to use your databse properly.
+ * to use your database properly.
  */
 
 use MvcLite\Database\Engine\Database;
@@ -28,6 +28,6 @@ $db = (new Database(DATABASE_CREDENTIALS))->attemptConnection();
 
 if (!$db)
 {
-    $error = new FailedConnectionToDatabaseException();
+    $error = new FailedConnectionToDatabaseException("Failed to connect to database.");
     $error->render();
 }
