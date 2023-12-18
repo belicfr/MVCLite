@@ -16,12 +16,18 @@ class DatabaseQuery
     private array $parameters;
 
     /** Current SQL query preparation. */
-    private PDOStatement $preparation;
+    private ?PDOStatement $preparation;
+
+    /** Current SQL query execution state. */
+    private ?bool $executionState;
 
     public function __construct(string $sqlQuery, array $parameters)
     {
         $this->sqlQuery = $sqlQuery;
         $this->parameters = $parameters;
+
+        $this->preparation = null;
+        $this->executionState = null;
 
         try
         {
@@ -56,8 +62,8 @@ class DatabaseQuery
     {
         global $db;
 
-        return $this->preparation
-                    ->execute($this->parameters);
+        return $this->executionState = $this->preparation
+                                            ->execute($this->parameters);
     }
 
     /**
@@ -75,5 +81,14 @@ class DatabaseQuery
     public function get(): array|false
     {
         return $this->preparation->fetch();
+    }
+
+    /**
+     * @return bool|null SQL query execution state if executed;
+     *                   else NULL
+     */
+    public function getExecutionState(): ?bool
+    {
+        return $this->executionState;
     }
 }
