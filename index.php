@@ -17,10 +17,11 @@ $exceptionsCss = file_get_contents(Storage::getEnginePath()
 echo "<style>$exceptionsCss $debugCss</style>";
 
 require_once "src/Database/connection.php";
-require_once "src/Database/authentification.php";
+require_once "src/Database/authentication.php";
 
 require_once "src/Router/reserved.php";
 require_once "src/Router/routes.php";
+require_once "src/Router/Engine/utilities.php";
 
 if (!isset($_GET["route"]))
 {
