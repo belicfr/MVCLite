@@ -14,7 +14,6 @@
         }
     ],
     "require": {
-        "ext-pdo": "*",
-        "symfony/console": "^7.0"
+        "ext-pdo": "*"
     }
 }
