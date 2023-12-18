@@ -7,7 +7,7 @@
 
 const AUTHENTIFICATION_COLUMNS = [
 
-    "table"     => "utilisateur",
+    "table"     => "users",
 
     "login"     => "name",
     "password"  => "password",
