@@ -8,6 +8,8 @@ use MvcLite\Router\Engine\Router;
 
 require_once "vendor/autoload.php";
 
+const ROUTE_PATH_PREFIX = '/';
+
 $debugCss = file_get_contents(Storage::getEnginePath()
     . "/DevelopmentUtilities/DebugRendering/rendering.css");
 
@@ -28,8 +30,6 @@ if (!isset($_GET["route"]))
     $error = new NoneRouteException();
     $error->render();
 }
-
-const ROUTE_PATH_PREFIX = '/';
 
 $route = Router::getRouteByPath(ROUTE_PATH_PREFIX . $_GET["route"]);
 Router::useRoute($route);
