@@ -9,6 +9,9 @@ use MvcLite\Router\Engine\Request;
 /**
  * Validation class.
  *
+ * This class allows developer to validate POST
+ * inputs following established and punctual rules.
+ *
  * @author belicfr
  */
 class Validator
@@ -29,8 +32,10 @@ class Validator
         $this->validationState = true;
         $this->errors = [];
 
+        /*
         $this->initializeRule("required");
         $this->initializeRule("confirmation");
+        */
     }
 
     /**
@@ -38,7 +43,7 @@ class Validator
      *  - not nulls
      *  - not empty strings
      *
-     * @param array $values Values to validate
+     * @param array $inputs Values to validate
      * @param string|null $error Custom error message
      * @return Validator Current validator object
      */
@@ -60,7 +65,7 @@ class Validator
 
             if (!$isFilled)
             {
-                $this->errors["required"][$input] = $error ?? $defaultError;
+                $this->addError("required", $input, $error ?? $defaultError);
             }
 
             $this->validationState &= $isFilled;
@@ -83,13 +88,11 @@ class Validator
         $inputValue = $this->request->getInput($input);
         $confirmationValue = $this->request->getInput($input . "_confirmation");
 
-        Debug::dd($inputValue, $confirmationValue);
-
         $isConfirmed = $inputValue == $confirmationValue;
 
         if (!$isConfirmed)
         {
-            $this->errors["confirmation"][$input] = $error ?? $defaultError;
+            $this->addError("confirmation", $input, $error ?? $defaultError);
         }
 
         $this->validationState &= $isConfirmed;
@@ -110,7 +113,29 @@ class Validator
      */
     public function hasFailed(): bool
     {
-        return count($this->getErrors());
+        $errorsCount = 0;
+        
+        foreach ($this->errors as $rule)
+        {
+            $errorsCount += count($rule);
+        }
+        
+        return $errorsCount;
+    }
+
+    /**
+     * Add a custom error to validator object.
+     *
+     * @param string $rule Rule name
+     * @param string $input Input name
+     * @param string $message Error message
+     * @return $this Current validator object
+     */
+    public function addError(string $rule, string $input, string $message): Validator
+    {
+        $this->errors[$input][$rule][] = $message;
+
+        return $this;
     }
 
     /**
@@ -121,5 +146,13 @@ class Validator
     private function initializeRule(string $rule): void
     {
         $this->errors[$rule] = [];
+    }
+
+    /**
+     * @return Request Stored Request object
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
     }
 }
