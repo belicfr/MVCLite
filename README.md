@@ -6,4 +6,4 @@ It's time to say **Hello, MVCLite**!
 **ease of use** and **security**.
 
 ## Get started
-🔗 **Official wiki** [here](https://github.com/belicfr/MVCLite/wiki)
+🔗 **Official wiki** [here](https://github.com/belicfr/MVCLite/wiki) **[WIP]**
