@@ -2,6 +2,8 @@
 
 namespace MvcLite\Router\Engine;
 
+use MvcLite\Engine\DevelopmentUtilities\Debug;
+
 /**
  * Redirection management class.
  *
@@ -13,13 +15,13 @@ class Redirect
      * Redirection by route path.
      *
      * @param string $path Route path
-     * @return Redirect Redirect object
+     * @return RedirectResponse Redirect object
      */
-    public static function to(string $path): Redirect
+    public static function to(string $path): RedirectResponse
     {
         $route = Router::getRouteByPath($path);
 
-        $redirection = new Redirect($route);
+        $redirection = new RedirectResponse($route);
         $redirection->redirect();
 
         return $redirection;
@@ -29,28 +31,15 @@ class Redirect
      * Redirection by route name.
      *
      * @param string $name Route name
-     * @return Redirect Redirect object
+     * @return RedirectResponse Redirect object
      */
-    public static function route(string $name): Redirect
+    public static function route(string $name): RedirectResponse
     {
         $route = Router::getRouteByName($name);
 
-        $redirection = new Redirect($route);
+        $redirection = new RedirectResponse($route);
         $redirection->redirect();
 
         return $redirection;
-    }
-
-    /** Redirection route. */
-    private Route $route;
-
-    private function __construct(Route $route)
-    {
-        $this->route = $route;
-    }
-
-    private function redirect(): void
-    {
-        header("Location: " . $this->route->getPath());
     }
 }
