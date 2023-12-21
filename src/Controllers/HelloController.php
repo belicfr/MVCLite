@@ -25,7 +25,7 @@ class HelloController extends Controller
 
     public function render(Request $request): void
     {
-        View::render("HelloWorld");
+        View::render("AgeForm");
     }
 
     public function ofAge(Request $request): void
