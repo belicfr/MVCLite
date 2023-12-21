@@ -12,22 +12,18 @@ use MvcLite\Engine\InternalResources\Storage;
     <title>Hello, World! :)</title>
 
     <?php
-    Storage::include("Css/Example/index.css");
+    //Storage::include("Css/Example/index.css");
     ?>
 </head>
 <body>
 
 <h1>
-    Hello, World! :)
+    Your age?
 </h1>
 
-<p>
-    This is a new <strong>MVCLite</strong> project.
-</p>
-
-<p>
-    This view can be edited.
-</p>
+<form action="<?= route('post.age') ?>" method="post">
+    <input type="number" name="age" id="age" placeholder="Your age here..." />
+</form>
 
 </body>
 </html>

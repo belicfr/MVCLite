@@ -27,4 +27,11 @@ class HelloController extends Controller
     {
         View::render("HelloWorld");
     }
+
+    public function ofAge(Request $request): void
+    {
+        View::render("OfAgeResponse", [
+            "isOfAge" => $request->getInput("age") >= 18,
+        ]);
+    }
 }

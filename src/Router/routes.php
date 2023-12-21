@@ -12,5 +12,8 @@ use MvcLite\Router\Engine\Router;
 
 Router::get("/", \MvcLite\Controllers\HelloController::class, "redirectToIndex");
 
-Router::get("/index", \MvcLite\Controllers\HelloController::class, "render")
-    ->setName("render.index");
+Router::get("/age", \MvcLite\Controllers\HelloController::class, "render")
+    ->setName("age");
+
+Router::post("/age", \MvcLite\Controllers\HelloController::class, "ofAge")
+    ->setName("post.age");
