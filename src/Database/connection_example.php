@@ -28,6 +28,6 @@ $db = (new Database(DATABASE_CREDENTIALS))->attemptConnection();
 
 if (!$db)
 {
-    $error = new FailedConnectionToDatabaseException();
+    $error = new FailedConnectionToDatabaseException("Database connection attempt failed");
     $error->render();
 }
