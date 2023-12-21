@@ -10,10 +10,10 @@ use MvcLite\Router\Engine\Router;
 
 // Create your own routes!
 
-Router::get("/", \MvcLite\Controllers\HelloController::class, "redirectToIndex");
+Router::get("/", \MvcLite\Controllers\AgeController::class, "redirectToIndex");
 
-Router::get("/age", \MvcLite\Controllers\HelloController::class, "render")
+Router::get("/age", \MvcLite\Controllers\AgeController::class, "render")
     ->setName("age");
 
-Router::post("/age", \MvcLite\Controllers\HelloController::class, "ofAge")
+Router::post("/age", \MvcLite\Controllers\AgeController::class, "ofAge")
     ->setName("post.age");
