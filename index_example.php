@@ -2,6 +2,7 @@
 
 session_start();
 
+use MvcLite\Engine\InternalResources\Delivery;
 use MvcLite\Engine\InternalResources\Storage;
 use MvcLite\Router\Engine\Exceptions\NoneRouteException;
 use MvcLite\Router\Engine\Router;
@@ -22,6 +23,12 @@ $exceptionsCss = file_get_contents(Storage::getEnginePath()
     . "/InternalResources/ExceptionRendering/rendering.css");
 
 echo "<style>$exceptionsCss $debugCss</style>";
+
+if (!isset($_SESSION[Delivery::DELIVER_POST_KEY]))
+{
+    (new Delivery())
+        ->save();
+}
 
 require_once "src/Database/connection.php";
 require_once "src/Database/authentication.php";
