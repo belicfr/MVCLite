@@ -123,6 +123,9 @@ class Router
         return current($route) ?: null;
     }
 
+    /**
+     * @return string Current HTTP method
+     */
     private static function getCurrentHttpMethod(): string
     {
         return count($_POST)
