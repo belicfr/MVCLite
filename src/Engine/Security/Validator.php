@@ -43,17 +43,17 @@ class Validator
      *  - not nulls
      *  - not empty strings
      *
-     * @param array $inputs Values to validate
+     * @param array $inputs Key of the inputs to validate
      * @param string|null $error Custom error message
      * @return Validator Current validator object
      */
     public function required(array $inputs, ?string $error = null): Validator
     {
-        $defaultError = " input is required.";
+        $defaultError = "This input is required.";
 
         foreach ($inputs as $input)
         {
-            $inputValue = $this->request->getInput($input);
+            $inputValue = $this->getRequest()->getInput($input);
 
             if ($inputValue === null)
             {
@@ -61,7 +61,7 @@ class Validator
                 $error->render();
             }
 
-            $isFilled = $inputValue !== null && strlen($inputValue);
+            $isFilled = $inputValue !== null && strlen(trim($inputValue));
 
             if (!$isFilled)
             {
@@ -77,7 +77,7 @@ class Validator
     /**
      * Returns if given inputs match.
      *
-     * @param string $input Input to confirm
+     * @param string $input Key of the input to confirm
      * @param string|null $error Custom error message
      * @return Validator Current validator object
      */
@@ -85,17 +85,148 @@ class Validator
     {
         $defaultError =  "Passwords does not match.";
 
-        $inputValue = $this->request->getInput($input);
-        $confirmationValue = $this->request->getInput($input . "_confirmation");
+        $inputValue = $this->getRequest()->getInput($input);
+        $confirmationValue = $this->getRequest()->getInput($input . "_confirmation");
+
+        if ($inputValue === null)
+        {
+            $error = new UndefinedInputException($input);
+            $error->render();
+        }
+
+        if ($confirmationValue === null)
+        {
+            $error = new UndefinedInputException($input . "confirmation");
+            $error->render();
+        }
 
         $isConfirmed = $inputValue == $confirmationValue;
 
-        if (!$isConfirmed)
+        if (strlen($inputValue) && strlen($confirmationValue) && !$isConfirmed)
         {
             $this->addError("confirmation", $input, $error ?? $defaultError);
         }
 
         $this->validationState &= $isConfirmed;
+
+        return $this;
+    }
+
+    /**
+     * @param string $input Key of the input to validate
+     * @param int $minLength Min length to apply
+     * @param string|null $error Optional custom error message
+     * @return $this Current validator instance
+     */
+    public function minLength(string $input, int $minLength, ?string $error = null): Validator
+    {
+        $defaultError = "This field must contain at least $minLength characters.";
+
+        $inputValue = $this->getRequest()->getInput($input);
+
+        if ($inputValue === null)
+        {
+            $error = new UndefinedInputException($input);
+            $error->render();
+        }
+
+        $isRespectingGivenLength = strlen($inputValue) >= $minLength;
+
+        if (strlen($inputValue) && !$isRespectingGivenLength)
+        {
+            $this->addError("minLength", $input, $error ?? $defaultError);
+        }
+
+        $this->validationState &= $isRespectingGivenLength;
+
+        return $this;
+    }
+
+    /**
+     * @param string $input Key of the input to validate
+     * @param int $maxLength Max length to apply
+     * @param string|null $error Optional custom error message
+     * @return $this Current validator instance
+     */
+    public function maxLength(string $input, int $maxLength, ?string $error = null): Validator
+    {
+        $defaultError = "This field must contain at most $maxLength characters.";
+
+        $inputValue = $this->getRequest()->getInput($input);
+
+        if ($inputValue === null)
+        {
+            $error = new UndefinedInputException($input);
+            $error->render();
+        }
+
+        $isRespectingGivenLength = strlen($input) <= $maxLength;
+
+        if (!$isRespectingGivenLength)
+        {
+            $this->addError("maxLength", $input, $error ?? $defaultError);
+        }
+
+        $this->validationState &= $isRespectingGivenLength;
+
+        return $this;
+    }
+
+    /**
+     * @param string $input Key of the input to validate
+     * @param string $pattern RegEx to apply
+     * @param string|null $error Optional custom error message
+     * @return $this Current validator instance
+     */
+    public function matches(string $input, string $pattern, ?string $error = null): Validator
+    {
+        $defaultError = "This input is not valid.";
+
+        $inputValue = $this->getRequest()->getInput($input);
+
+        if ($inputValue === null)
+        {
+            $error = new UndefinedInputException($input);
+            $error->render();
+        }
+
+        $isMatchingPattern = preg_match($pattern, $input);
+
+        if (!$isMatchingPattern)
+        {
+            $this->addError("matches", $input, $error ?? $defaultError);
+        }
+
+        $this->validationState &= $isMatchingPattern;
+
+        return $this;
+    }
+
+    /**
+     * @param string $input Key of the input to validate
+     * @param string|null $error Optional custom error message
+     * @return $this Current validator instance
+     */
+    public function email(string $input, ?string $error = null): Validator
+    {
+        $defaultError = "This email address is not valid.";
+
+        $inputValue = $this->getRequest()->getInput($input);
+
+        if ($inputValue === null)
+        {
+            $error = new UndefinedInputException($input);
+            $error->render();
+        }
+
+        $isValidEmailAddress = filter_var($inputValue, FILTER_VALIDATE_EMAIL) == $inputValue;
+
+        if (strlen($inputValue) && !$isValidEmailAddress)
+        {
+            $this->addError("email", $input, $error ?? $defaultError);
+        }
+
+        $this->validationState &= $isValidEmailAddress;
 
         return $this;
     }
@@ -133,8 +264,7 @@ class Validator
      */
     public function addError(string $rule, string $input, string $message): Validator
     {
-        $this->errors[$input][$rule][] = $message;
-
+        $this->errors[$input][$rule] = $message;
         return $this;
     }
 
