@@ -5,6 +5,7 @@ namespace MvcLite\Engine\InternalResources;
 use ArrayObject;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Engine\Security\Validator;
+use MvcLite\Router\Engine\Request;
 
 /**
  * Delivery management class.
@@ -19,6 +20,9 @@ class Delivery
     /** Current validator object. */
     private ?Validator $validator;
 
+    /** Current request object. */
+    private ?Request $request;
+
     /** Current global properties array. */
     private array $props;
 
@@ -31,9 +35,10 @@ class Delivery
         return unserialize($_SESSION[self::DELIVER_POST_KEY]);
     }
 
-    public function __construct(?Validator $validator = null)
+    public function __construct()
     {
-        $this->validator = $validator;
+        $this->validator = null;
+        $this->request = null;
         $this->props = [];
     }
 
@@ -55,11 +60,21 @@ class Delivery
     }
 
     /**
+     * @param Validator $validator Validator instance
+     */
+    public function setValidator(Validator $validator): Delivery
+    {
+        $this->validator = $validator;
+
+        return $this;
+    }
+
+    /**
      * Add global property to current delivery instance.
      *
      * @param string $key
      * @param mixed $value
-     * @return $this Current delivery object
+     * @return Delivery Current delivery object
      */
     public function add(string $key, mixed $value): Delivery
     {
@@ -74,6 +89,33 @@ class Delivery
     public function getProps(): array
     {
         return $this->props;
+    }
+
+    /**
+     * @return Request|null Current request object if exists;
+     *                      else NULL
+     */
+    public function getRequest(): ?Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request Request instance
+     */
+    public function setRequest(Request $request): Delivery
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    /**
+     * @return bool If there is a request object
+     */
+    public function hasRequest(): bool
+    {
+        return $this->getRequest() !== null;
     }
 
     /**
