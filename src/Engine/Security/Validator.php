@@ -160,7 +160,7 @@ class Validator
             $error->render();
         }
 
-        $isRespectingGivenLength = strlen($input) <= $maxLength;
+        $isRespectingGivenLength = strlen($inputValue) <= $maxLength;
 
         if (!$isRespectingGivenLength)
         {
