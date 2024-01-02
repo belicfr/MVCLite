@@ -269,6 +269,17 @@ class Validator
     }
 
     /**
+     * @param string $input
+     * @param string $rule
+     * @return bool If given input does not respect given
+     *              rule.
+     */
+    public function hasError(string $input, string $rule): bool
+    {
+        return isset($this->getErrors()[$input][$rule]);
+    }
+
+    /**
      * Validator rule initialization.
      *
      * @param string $rule Rule name
