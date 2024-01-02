@@ -190,7 +190,7 @@ class Validator
             $error->render();
         }
 
-        $isMatchingPattern = preg_match($pattern, $input);
+        $isMatchingPattern = preg_match($pattern, $inputValue);
 
         if (!$isMatchingPattern)
         {
