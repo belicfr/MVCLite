@@ -1,5 +1,5 @@
 div[mvclite-dd] {
-  border: none;
+  border: solid 3px darkorange;
   border-radius: 10px;
 
   padding: 10px;
@@ -8,4 +8,13 @@ div[mvclite-dd] {
   font-family: monospace;
 
   background: #212121;
+
+  margin-bottom: 20px;
+
+  box-shadow: 0 0 10px rgba(0 0 0 / .4);
+
+  &::before {
+    content: "DEBUG:";
+    color: darkorange;
+  }
 }

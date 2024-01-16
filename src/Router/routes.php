@@ -6,11 +6,13 @@
  */
 
 
+use MvcLite\Controllers\IndexController;
 use MvcLite\Router\Engine\Router;
 
 // Create your own routes!
 
-Router::get("/", \MvcLite\Controllers\HelloController::class, "redirectToIndex");
+Router::get("/", IndexController::class, "redirectToIndex");
 
-Router::get("/index", \MvcLite\Controllers\HelloController::class, "render")
-    ->setName("render.index");
+
+Router::get("/index", IndexController::class, "render")
+    ->setName("index");

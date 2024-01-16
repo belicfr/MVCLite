@@ -4,10 +4,9 @@ namespace MvcLite\Controllers;
 
 use MvcLite\Controllers\Engine\Controller;
 use MvcLite\Router\Engine\Redirect;
-use MvcLite\Router\Engine\Request;
 use MvcLite\Views\Engine\View;
 
-class HelloController extends Controller
+class IndexController extends Controller
 {
     public function __construct()
     {
@@ -16,15 +15,14 @@ class HelloController extends Controller
         // Empty constructor.
     }
 
-    // Create your own methods!.
-
     public function redirectToIndex(): void
     {
-        Redirect::to("/index");
+        Redirect::to("/index", "test")
+            ->redirect();
     }
 
-    public function render(Request $request): void
+    public function render(): void
     {
-        View::render("HelloWorld");
+        View::render("Index");
     }
 }

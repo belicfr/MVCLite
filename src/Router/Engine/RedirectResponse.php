@@ -16,7 +16,7 @@ class RedirectResponse
     /** Redirection route. */
     private Route $route;
 
-    public function __construct(Route $route)
+    public function __construct(Route $route, array $parameters)
     {
         $this->route = $route;
     }
