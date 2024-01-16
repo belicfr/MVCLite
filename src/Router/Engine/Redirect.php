@@ -17,11 +17,13 @@ class Redirect
      * @param string $path Route path
      * @return RedirectResponse Redirect object
      */
-    public static function to(string $path): RedirectResponse
+    public static function to(string $path, mixed ...$parameters): RedirectResponse
     {
+        Debug::dd($parameters);
+
         $route = Router::getRouteByPath($path);
 
-        $redirection = new RedirectResponse($route);
+        $redirection = new RedirectResponse($route, $parameters);
         $redirection->redirect();
 
         return $redirection;
