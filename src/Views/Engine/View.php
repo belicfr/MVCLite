@@ -6,7 +6,7 @@ use MvcLite\Views\Engine\Exceptions\NotFoundViewException;
 
 class View
 {
-    public static function render(string $viewPath, array $props = [])
+    public static function render(string $viewPath, array $props = []): void
     {
         $absoluteViewPath = "./src/Views/$viewPath.php";
 
