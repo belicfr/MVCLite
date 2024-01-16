@@ -4,11 +4,16 @@
   "description": "Festiplan",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwindcss": "npx tailwindcss -i ./src/Resources/Css/tailwind.css -o src/Resources/Css/ready.css --watch --max-old-space-size=1024"
   },
   "author": "belicfr",
   "license": "MIT",
   "devDependencies": {
     "tailwindcss": "^3.3.6"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "gsap": "^3.12.4"
   }
 }
