@@ -28,13 +28,11 @@ class IndexController extends Controller
     public function render(): void
     {
         $test = (new FirstModel())
-            ->select("id");
+            ->select()
+            ->execute();
 
-        Debug::dd(
-            $test,
-            $test->execute()
-        );
-
-        View::render("Index");
+        View::render("Index", [
+            "test" => $test,
+        ]);
     }
 }

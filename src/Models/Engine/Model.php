@@ -38,6 +38,11 @@ class Model
 
     public function select(string ...$columns): ORMSelection
     {
+        if (!count($columns))
+        {
+            $columns = ['*'];
+        }
+
         return new ORMSelection($this, $columns);
     }
 }

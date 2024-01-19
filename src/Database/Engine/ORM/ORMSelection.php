@@ -45,8 +45,11 @@ class ORMSelection extends ORMQuery
         while ($line = $query->get())
         {
             $lineObject = new ($this->getModelObject());
+            $tableColumns = $this->getColumns();
 
-            foreach ($this->getColumns() as $column)
+            foreach ($tableColumns !== ['*']
+                         ? $this->getColumns()
+                         : array_keys($line) as $column)
             {
                 $lineObject->$column = $line[$column];
             }
