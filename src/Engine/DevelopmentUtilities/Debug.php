@@ -18,11 +18,11 @@ class Debug
         foreach ($values as $value)
         {
             echo "<div mvclite-dd>
-                  <pre>";
+                    <pre>";
 
             var_dump($value);
 
-            echo "</pre>
+            echo "  </pre>
                   </div>";
         }
     }

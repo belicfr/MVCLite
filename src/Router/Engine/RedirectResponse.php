@@ -19,6 +19,7 @@ class RedirectResponse
     public function __construct(Route $route, array $parameters)
     {
         $this->route = $route;
+        $this->parameters = $parameters;
     }
 
     public function withValidator(Validator $validator): RedirectResponse
@@ -29,8 +30,19 @@ class RedirectResponse
         return $this;
     }
 
+    /**
+     * Run redirection.
+     */
     public function redirect(): void
     {
-        header("Location: " . $this->route->getCompletePath());
+        header("Location: " . $this->route->getCompletePath() . $this->route->prepareParameters());
+    }
+
+    /**
+     * @return Route Redirection route
+     */
+    public function getRoute(): Route
+    {
+        return $this->route;
     }
 }

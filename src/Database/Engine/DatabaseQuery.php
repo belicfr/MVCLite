@@ -3,6 +3,8 @@
 namespace MvcLite\Database\Engine;
 
 use MvcLite\Database\Engine\Exceptions\FailedConnectionToDatabaseException;
+use MvcLite\Database\Engine\Exceptions\FailedDatabaseQueryException;
+use MvcLite\Database\Engine\Exceptions\NegativeOrNullStackException;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use PDOException;
 use PDOStatement;
@@ -36,7 +38,7 @@ class DatabaseQuery
         }
         catch (PDOException $e)
         {
-            $error = new FailedConnectionToDatabaseException($e->getMessage());
+            $error = new FailedDatabaseQueryException($sqlQuery);
             $error->render();
         }
     }
@@ -60,8 +62,6 @@ class DatabaseQuery
      */
     private function executeQuery(): bool
     {
-        global $db;
-
         return $this->executionState = $this->preparation
                                             ->execute($this->parameters);
     }
@@ -90,5 +90,13 @@ class DatabaseQuery
     public function getExecutionState(): ?bool
     {
         return $this->executionState;
+    }
+
+    /**
+     * @return int Result lines count
+     */
+    public function count(): int
+    {
+        return count($this->getAll());
     }
 }

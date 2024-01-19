@@ -98,7 +98,10 @@ class Request
      */
     public function getParameters(): array
     {
-        return $this->parameters;
+        return array_filter($this->parameters, function ($parameterKey)
+        {
+            return $parameterKey !== "route";
+        }, ARRAY_FILTER_USE_KEY);
     }
 
     /**

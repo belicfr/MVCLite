@@ -38,11 +38,21 @@ class Database
                                  . ";port="
                                  . $this->credentials["port"]
                                  . ";dbname="
-                                 . $this->credentials["name"];
+                                 . $this->credentials["name"]
+                                 . ";charset="
+                                 . $this->credentials["charset"];
+
+            $options = [																				 
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ];
 
             $database = new PDO($databaseInformation,
                                 $this->credentials["user"],
-                                $this->credentials["password"]);
+                                $this->credentials["password"],
+                                $options,
+                            );
 
             $state = true;
         }

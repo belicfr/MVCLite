@@ -2,7 +2,9 @@
 
 namespace MvcLite\Models;
 
-class User
+use MvcLite\Models\Engine\Model;
+
+class User extends Model
 {
     /** User id. */
     private int $id;
@@ -12,6 +14,8 @@ class User
 
     public function __construct(int $id, string $name)
     {
+        parent::__construct();
+
         $this->id = $id;
         $this->name = $name;
     }

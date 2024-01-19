@@ -3,6 +3,7 @@
 namespace MvcLite\Router\Engine;
 
 use MvcLite\Engine\DevelopmentUtilities\Debug;
+use MvcLite\Engine\InternalResources\Delivery;
 use MvcLite\Router\Engine\Exceptions\UndefinedControllerMethodException;
 use MvcLite\Router\Engine\Exceptions\UndefinedRouteException;
 
@@ -33,7 +34,11 @@ class Router
      */
     public static function get(string $path, string $controller, string $method): Route
     {
-        return self::$routes[] = new Route(self::GET_METHOD, $path, $controller, $method);
+        $parameters = Delivery::get()
+            ->getRequest()
+            ->getParameters();
+
+        return self::$routes[] = new Route(self::GET_METHOD, $path, $controller, $method, $parameters);
     }
 
     /**
@@ -46,7 +51,11 @@ class Router
      */
     public static function post(string $path, string $controller, string $method): Route
     {
-        return self::$routes[] = new Route(self::POST_METHOD, $path, $controller, $method);
+        $parameters = Delivery::get()
+            ->getRequest()
+            ->getParameters();
+
+        return self::$routes[] = new Route(self::POST_METHOD, $path, $controller, $method, $parameters);
     }
 
     /**
@@ -94,7 +103,8 @@ class Router
     public static function useRoute(Route $route): void
     {
         $controllerInstance = new ($route->getController());
-        $request = new Request();
+        $delivery = (new Delivery())
+            ->save();
 
         if (!method_exists($controllerInstance, $route->getMethod()))
         {
@@ -102,7 +112,7 @@ class Router
             $error->render();
         }
 
-        call_user_func([$controllerInstance, $route->getMethod()], $request);
+        call_user_func([$controllerInstance, $route->getMethod()], $delivery->getRequest());
     }
 
     /**

@@ -30,10 +30,14 @@ class Route
     /** Route name. */
     private ?string $name;
 
+    /** Redirection GET parameters. */
+    private array $parameters;
+
     public function __construct(string $httpMethod,
                                 string $path,
                                 string $controller,
-                                string $method)
+                                string $method,
+                                array $parameters)
     {
         $pathPrefix = substr(ROUTE_PATH_PREFIX,
             0,
@@ -45,6 +49,7 @@ class Route
         $this->controller = $controller;
         $this->method = $method;
         $this->name = null;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -107,5 +112,30 @@ class Route
         }
 
         $this->name = $name;
+    }
+
+    /**
+     * @return array Redirection GET parameters
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @return string Prepared parameters string (for URL)
+     */
+    public function prepareParameters(): string
+    {
+        $stringTuples = [];
+
+        foreach ($this->getParameters() as $parameterKey => $parameter)
+        {
+            $stringTuples[] = "$parameterKey=$parameter";
+        }
+
+        return count($this->getParameters())
+            ? "?" . implode('&', $stringTuples)
+            : "";
     }
 }
