@@ -46,6 +46,8 @@ class MvcLiteException extends Exception
         $file = $this->getFile();
         $title = $this->getTitle();
 
+        self::importCss();
+
         $html = "<div mvclite-dialog>
                      <div class='dialog-window'>
                          <h1>
@@ -78,5 +80,16 @@ class MvcLiteException extends Exception
     {
         echo $this->getDialog();
         die;
+    }
+
+    /**
+     * Import debug rendering CSS.
+     */
+    private static function importCss(): void
+    {
+        $debugCss = file_get_contents(Storage::getEnginePath()
+            . "/InternalResources/ExceptionRendering/rendering.css");
+
+        echo "<style>$debugCss</style>";
     }
 }
