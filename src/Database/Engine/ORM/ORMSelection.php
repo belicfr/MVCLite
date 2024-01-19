@@ -3,9 +3,6 @@
 namespace MvcLite\Database\Engine\ORM;
 
 use MvcLite\Database\Engine\Database;
-use MvcLite\Database\Engine\ORM\ORMQuery;
-use MvcLite\Engine\DevelopmentUtilities\Debug;
-use MvcLite\Engine\Precepts\Naming;
 
 /**
  * ORM selection query class.
