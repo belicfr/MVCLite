@@ -115,11 +115,20 @@ class Route
     }
 
     /**
-     * @return array Redirection GET parameters
+     * @return array GET parameters
      */
     public function getParameters(): array
     {
         return $this->parameters;
+    }
+
+    /**
+     * @param array $parameters GET parameters array
+     * @return array GET parameters
+     */
+    public function setParameters(array $parameters = []): array
+    {
+        return $this->parameters = $parameters;
     }
 
     /**
