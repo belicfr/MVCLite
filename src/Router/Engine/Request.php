@@ -58,14 +58,14 @@ class Request
     /**
      * @param string $key Input key
      * @param bool $neutralize If input value must be neutralized
-     * @return string Input value
+     * @return string|null Input value if exists;
+     *                     else NULL
      */
-    public function getInput(string $key, bool $neutralize = true): string
+    public function getInput(string $key, bool $neutralize = true): ?string
     {
         if (!in_array($key, array_keys($this->getInputs())))
         {
-            $error = new UndefinedInputException($key);
-            $error->render();
+            return null;
         }
 
         $input = $this->getInputs()[$key];
@@ -106,14 +106,14 @@ class Request
 
     /**
      * @param string $key Parameter key
-     * @return string Parameter value
+     * @return string|null Parameter value if exists;
+     *                     else NULL
      */
-    public function getParameter(string $key): string
+    public function getParameter(string $key): ?string
     {
         if (!in_array($key, array_keys($this->getParameters())))
         {
-            $error = new UndefinedParameterException($key);
-            $error->render();
+            return null;
         }
 
         return $this->getParameters()[$key];
