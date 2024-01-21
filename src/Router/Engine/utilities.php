@@ -18,9 +18,14 @@ function route(string $name, array $parameters = []): string
 {
     $route = Router::getRouteByName($name);
 
-    return $route !== null
-        ? $route->getPath() . $route->prepareParameters()
-        : '#';
+    if ($route === null)
+    {
+        return '#';
+    }
+
+    $route->setParameters($parameters);
+
+    return $route->getPath() . $route->prepareParameters();
 }
 
 /**
