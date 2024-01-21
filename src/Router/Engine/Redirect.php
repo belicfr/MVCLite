@@ -19,8 +19,6 @@ class Redirect
      */
     public static function to(string $path, array $parameters = []): RedirectResponse
     {
-        //Debug::dd($parameters);
-
         $route = Router::getRouteByPath($path);
 
         $redirection = new RedirectResponse($route, $parameters);
