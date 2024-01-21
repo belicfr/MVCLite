@@ -3,6 +3,7 @@
 namespace MvcLite\Database\Engine\ORM;
 
 use MvcLite\Database\Engine\Database;
+use MvcLite\Engine\DevelopmentUtilities\Debug;
 
 /**
  * ORM selection query class.
@@ -14,11 +15,21 @@ class ORMSelection extends ORMQuery
     private const BASE_SQL_QUERY_TEMPLATE
         = "SELECT %s FROM %s";
 
+    private const WHERE_CLAUSE_TEMPLATE
+        = "WHERE %s";
+
+    /** Linked relationships. */
+    private array $relationships;
+
+    /** Given WHERE clauses. */
+    private array $conditions;
+
     public function __construct(object $modelObject, array $columns)
     {
         parent::__construct($modelObject, $columns);
 
-        // Empty constructor.
+        $this->relationships = [];
+        $this->conditions = [];
     }
 
     /**
@@ -26,9 +37,58 @@ class ORMSelection extends ORMQuery
      */
     public function getSqlQuery(): string
     {
-        return sprintf(self::BASE_SQL_QUERY_TEMPLATE,
-                       parent::getImplodedColumns(),
-                       $this->getModelObject()->getTableName());
+        $sql = sprintf(self::BASE_SQL_QUERY_TEMPLATE,
+            parent::getImplodedColumns(),
+            $this->getModelObject()->getTableName());
+
+        if ($this->hasConditions())
+        {
+            $sql .= " WHERE " . implode(" AND ", $this->getConditions());
+        }
+
+        return $sql;
+    }
+
+    /**
+     * @return array Relationships to use
+     */
+    public function getRelationships(): array
+    {
+        return $this->relationships;
+    }
+
+    /**
+     * Includes relationships to current request.
+     *
+     * @param string ...$relationships Relationships to use
+     * @return $this
+     */
+    public function with(string ...$relationships): ORMSelection
+    {
+        $this->relationships = $relationships;
+
+        return $this;
+    }
+
+    public function getConditions(): array
+    {
+        return $this->conditions;
+    }
+
+    public function hasConditions(): bool
+    {
+        return count($this->getConditions());
+    }
+
+    public function where(string $column, string $operatorOrValue, ?string $value = null): ORMSelection
+    {
+        $sqlWhereClause = $value === null
+            ? "$column = $operatorOrValue"
+            : "$column $operatorOrValue $value";
+
+        $this->conditions[] = $sqlWhereClause;
+
+        return $this;
     }
 
     /**
@@ -49,6 +109,12 @@ class ORMSelection extends ORMQuery
                          : array_keys($line) as $column)
             {
                 $lineObject->$column = $line[$column];
+            }
+
+            foreach ($this->getRelationships() as $relationship)
+            {
+                $relationshipRunning = call_user_func([$lineObject, $relationship]);
+                $lineObject->$relationship = $relationshipRunning;
             }
 
             $result[] = $lineObject;
