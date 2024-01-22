@@ -5,6 +5,7 @@ namespace MvcLite\Controllers;
 use MvcLite\Controllers\Engine\Controller;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Models\FirstModel;
+use MvcLite\Models\User;
 use MvcLite\Router\Engine\Redirect;
 use MvcLite\Views\Engine\View;
 
@@ -27,12 +28,13 @@ class IndexController extends Controller
 
     public function render(): void
     {
-        $test = (new FirstModel())
+        $users = (new User())
             ->select()
-            ->execute();
+            ->execute()
+            ->publish();
 
         View::render("Index", [
-            "test" => $test,
+            "users" => $users,
         ]);
     }
 }
