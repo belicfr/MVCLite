@@ -15,9 +15,9 @@ class HasOne extends ModelRelationship
     /** Foreign key column name. */
     private string $foreignKeyColumnName;
 
-    public function __construct(Model $leftModel, string $rightModel, ?string $customTableName = null)
+    public function __construct(Model $leftModel, string $rightModel, ?string $customColumnName = null)
     {
-        parent::__construct($leftModel, $rightModel, $customTableName);
+        parent::__construct($leftModel, $rightModel, $customColumnName);
 
         $this->foreignKeyColumnName
             = $customColumnName ?? "id_" . Naming::camelToSnake(Naming::getClassName($leftModel::class));
