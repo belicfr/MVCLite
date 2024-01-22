@@ -2,6 +2,7 @@
 
 namespace MvcLite\Models\Engine;
 
+use JsonSerializable;
 use MvcLite\Database\Engine\ORM\ORMSelection;
 use MvcLite\Engine\Precepts\Naming;
 use MvcLite\Models\Engine\Relationships\BelongsTo;
@@ -10,11 +11,8 @@ use MvcLite\Models\Engine\Relationships\HasOne;
 
 use Symfony\Component\String\Inflector\EnglishInflector;
 
-class Model
+class Model implements JsonSerializable
 {
-    /** Model table name. */
-    private string $tableName;
-
     /**
      * Public attributes that will be encoded
      * to JSON for View usage.
@@ -23,27 +21,7 @@ class Model
 
     public function __construct()
     {
-        $inflector = new EnglishInflector();
-
-        $this->tableName = $inflector->pluralize(Naming::camelToSnake(Naming::getClassNameByObject($this)))[0];
         $this->publicAttributes = [];
-    }
-
-    /**
-     * @return string Model table name
-     */
-    public function getTableName(): string
-    {
-        return $this->tableName;
-    }
-
-    /**
-     * @param string $tableName New model table name
-     * @return string New model table name
-     */
-    public function setTableName(string $tableName): string
-    {
-        return $this->tableName = $tableName;
     }
 
     /**
@@ -66,6 +44,16 @@ class Model
         $this->publicAttributes[$key] = $value;
 
         return $this->getPublicAttributes();
+    }
+
+    /**
+     * @return string Model table name
+     */
+    public static function getTableName(): string
+    {
+        $inflector = new EnglishInflector();
+
+        return $inflector->pluralize(Naming::camelToSnake(Naming::getClassName(static::class)))[0];
     }
 
     /*
@@ -94,13 +82,22 @@ class Model
      * ************  MVCLite ORM PART  ************
      */
 
-    public function select(string ...$columns): ORMSelection
+    public static function select(string ...$columns): ORMSelection
     {
         if (!count($columns))
         {
             $columns = ['*'];
         }
 
-        return new ORMSelection($this, $columns);
+        return new ORMSelection(static::class, $columns);
+    }
+
+    /*
+     * ************ JSON SERIALIZATION ************
+     */
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->getPublicAttributes();
     }
 }
