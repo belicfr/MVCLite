@@ -11,24 +11,24 @@ use MvcLite\Models\Engine\ModelCollection;
  */
 class ORMQuery
 {
-    /** Current model class object. */
-    private object $modelObject;
+    /** Current model class. */
+    private string $modelClass;
 
     /** Table columns used by query. */
     private array $columns;
 
-    public function __construct(object $modelObject, array $columns)
+    public function __construct(string $modelClass, array $columns)
     {
-        $this->modelObject = $modelObject;
+        $this->modelClass = $modelClass;
         $this->columns = $columns;
     }
 
     /**
-     * @return object Current model class object
+     * @return object Current model class
      */
-    public function getModelObject(): object
+    public function getModelClass(): string
     {
-        return $this->modelObject;
+        return $this->modelClass;
     }
 
     /**

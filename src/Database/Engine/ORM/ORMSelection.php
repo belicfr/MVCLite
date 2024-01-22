@@ -25,9 +25,9 @@ class ORMSelection extends ORMQuery
     /** Given WHERE clauses. */
     private array $conditions;
 
-    public function __construct(object $modelObject, array $columns)
+    public function __construct(string $modelClass, array $columns)
     {
-        parent::__construct($modelObject, $columns);
+        parent::__construct($modelClass, $columns);
 
         $this->relationships = [];
         $this->conditions = [];
@@ -40,7 +40,7 @@ class ORMSelection extends ORMQuery
     {
         $sql = sprintf(self::BASE_SQL_QUERY_TEMPLATE,
             parent::getImplodedColumns(),
-            $this->getModelObject()->getTableName());
+            ($this->getModelClass())::getTableName());
 
         if ($this->hasConditions())
         {
@@ -102,7 +102,7 @@ class ORMSelection extends ORMQuery
 
         while ($line = $query->get())
         {
-            $lineObject = new ($this->getModelObject());
+            $lineObject = new ($this->getModelClass());
             $tableColumns = $this->getColumns();
 
             foreach ($line as $columnName => $columnValue)
