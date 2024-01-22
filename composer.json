@@ -15,6 +15,7 @@
     ],
     "require": {
         "ext-pdo": "*",
-        "symfony/string": "^7.0"
+        "symfony/string": "^7.0",
+        "twig/twig": "^3.0"
     }
 }
