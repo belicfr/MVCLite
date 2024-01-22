@@ -29,8 +29,6 @@ class View
                   <meta http-equiv=\"refresh\" content=\"0; url=" . ROUTE_PATH_PREFIX . "nojs.php\" />
               </noscript>";
 
-        $html = file_get_contents($absoluteViewPath);
-
         $twigLoader = new FilesystemLoader("./src/Views");
         $twigEnvironment = new Environment($twigLoader);
 
