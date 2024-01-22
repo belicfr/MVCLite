@@ -1,6 +1,6 @@
 <?php
 
-const ROUTE_PATH_PREFIX = '/website/';
+const ROUTE_PATH_PREFIX = '/';
 
 const DATABASE_CREDENTIALS = [
 
