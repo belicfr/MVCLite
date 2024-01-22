@@ -17,4 +17,8 @@ div[mvclite-dd] {
     content: "DEBUG:";
     color: darkorange;
   }
+
+  > pre {
+    word-wrap: anywhere;
+  }
 }

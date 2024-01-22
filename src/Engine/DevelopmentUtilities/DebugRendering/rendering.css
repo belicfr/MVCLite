@@ -12,5 +12,8 @@ div[mvclite-dd]::before {
   content: "DEBUG:";
   color: darkorange;
 }
+div[mvclite-dd] > pre {
+  word-wrap: anywhere;
+}
 
 /*# sourceMappingURL=rendering.css.map */
