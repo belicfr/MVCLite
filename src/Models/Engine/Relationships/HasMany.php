@@ -48,8 +48,9 @@ class HasMany extends ModelRelationship
     {
         $related = (new (parent::getRightModel()))
             ->select()
-            ->where($this->getForeignKeyColumnName(), parent::getLeftModel()->id)
-            ->execute();
+            ->where($this->getForeignKeyColumnName(), parent::getLeftModel()->getPublicAttributes()["id"])
+            ->execute()
+            ->asArray();
 
         return $this->children = $related;
     }
