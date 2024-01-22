@@ -4,6 +4,7 @@ namespace MvcLite\Views\Engine;
 
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Engine\InternalResources\Delivery;
+use MvcLite\Engine\Session\Session;
 use MvcLite\Router\Engine\Request;
 use MvcLite\Views\Engine\Exceptions\NotFoundViewException;
 use Twig\Environment;
@@ -23,6 +24,11 @@ class View
         }
 
         $props["delivery"] = Delivery::get();
+        $props["session"] = [
+            "isLogged" => Session::isLogged(),
+            "id" => Session::getSessionId(),
+            "user" => Session::getUserAccount(),
+        ];
 
         echo "<noscript>
                   Veuillez activer le JavaScript.
