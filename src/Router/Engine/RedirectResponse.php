@@ -16,15 +16,45 @@ class RedirectResponse
     /** Redirection route. */
     private Route $route;
 
+    /** Current delivery object. */
+    private Delivery $currentDelivery;
+
     public function __construct(Route $route, array $parameters)
     {
         $this->route = $route;
+        $this->currentDelivery = new Delivery();
         $this->parameters = $parameters;
     }
 
+    /**
+     * @return Route Redirection route
+     */
+    public function getRoute(): Route
+    {
+        return $this->route;
+    }
+
+    /**
+     * @param Validator $validator Validator instance
+     * @return $this Current RedirectResponse object
+     */
     public function withValidator(Validator $validator): RedirectResponse
     {
-        (new Delivery($validator))
+        $this->currentDelivery
+            ->setValidator($validator)
+            ->save();
+
+        return $this;
+    }
+
+    /**
+     * @param Request $request Request instance
+     * @return $this Current RedirectResponse object
+     */
+    public function withRequest(Request $request): RedirectResponse
+    {
+        $this->currentDelivery
+            ->setRequest($request)
             ->save();
 
         return $this;
@@ -36,13 +66,6 @@ class RedirectResponse
     public function redirect(): void
     {
         header("Location: " . $this->route->getCompletePath() . $this->route->prepareParameters());
-    }
-
-    /**
-     * @return Route Redirection route
-     */
-    public function getRoute(): Route
-    {
-        return $this->route;
+        // TODO: verify parameters sharing during redirection.
     }
 }

@@ -26,6 +26,13 @@ class Delivery
     private array $props;
 
     /**
+     * Route usage iteration count.
+     * Used to destroy Delivery current instance
+     * after 2 usages.
+     */
+    private int $routingIterationCount;
+
+    /**
      * @return Delivery Current delivery object if exists;
      *                  else NULL
      */
@@ -34,11 +41,12 @@ class Delivery
         return unserialize($_SESSION[self::DELIVER_POST_KEY]);
     }
 
-    public function __construct()
+    public function __construct(?Validator $currentValidator = null)
     {
         $this->request = new Request();
-        $this->validator = new Validator($this->getRequest());
+        $this->validator = $currentValidator ?? new Validator($this->getRequest());
         $this->props = [];
+        $this->routingIterationCount = 0;
     }
 
     /**
@@ -115,6 +123,23 @@ class Delivery
     public function hasRequest(): bool
     {
         return $this->getRequest() !== null;
+    }
+
+    public function getRoutingIterationCount(): int
+    {
+        return $this->routingIterationCount;
+    }
+
+    public function mustBeDestroyed(): bool
+    {
+        return $this->routingIterationCount > 1;
+    }
+
+    public function incrementRoutingIterationCount(): Delivery
+    {
+        $this->routingIterationCount++;
+
+        return $this;
     }
 
     /**
