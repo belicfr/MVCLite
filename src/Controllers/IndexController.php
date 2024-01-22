@@ -33,8 +33,15 @@ class IndexController extends Controller
             ->execute()
             ->publish();
 
+        $count = (new User())
+            ->select("COUNT(*) as count")
+            ->execute()
+            ->publish()[0]
+            ->count;
+
         View::render("Index", [
             "users" => $users,
+            "count" => $count,
         ]);
     }
 }
