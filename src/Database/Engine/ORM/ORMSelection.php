@@ -105,11 +105,9 @@ class ORMSelection extends ORMQuery
             $lineObject = new ($this->getModelObject());
             $tableColumns = $this->getColumns();
 
-            foreach ($tableColumns !== ['*']
-                         ? $this->getColumns()
-                         : array_keys($line) as $column)
+            foreach ($line as $columnName => $columnValue)
             {
-                $lineObject->addPublicAttribute($column, $line[$column]);
+                $lineObject->addPublicAttribute($columnName, $columnValue);
             }
 
             foreach ($this->getRelationships() as $relationship)
