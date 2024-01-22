@@ -14,5 +14,8 @@ use MvcLite\Router\Engine\Router;
 Router::get("/", IndexController::class, "redirectToIndex");
 
 
-Router::get("/index", IndexController::class, "render")
-    ->setName("index");
+Router::get("/index/php", IndexController::class, "renderPhp")
+    ->setName("index.php");
+
+Router::get("/index/twig", IndexController::class, "renderTwig")
+    ->setName("index.twig");
