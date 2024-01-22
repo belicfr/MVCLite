@@ -2,6 +2,8 @@
 
 namespace MvcLite\Database\Engine\ORM;
 
+use MvcLite\Models\Engine\ModelCollection;
+
 /**
  * Internal MVCLite ORM main class.
  *
@@ -54,10 +56,10 @@ class ORMQuery
     }
 
     /**
-     * @return array Query execution result
+     * @return ModelCollection Query execution result
      */
-    public function execute(): array
+    public function execute(): ModelCollection
     {
-        return [];
+        return new ModelCollection();
     }
 }

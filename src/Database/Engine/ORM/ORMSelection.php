@@ -4,6 +4,7 @@ namespace MvcLite\Database\Engine\ORM;
 
 use MvcLite\Database\Engine\Database;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
+use MvcLite\Models\Engine\ModelCollection;
 
 /**
  * ORM selection query class.
@@ -92,9 +93,9 @@ class ORMSelection extends ORMQuery
     }
 
     /**
-     * @return array Query execution result
+     * @return ModelCollection Query execution result
      */
-    public function execute(): array
+    public function execute(): ModelCollection
     {
         $query = Database::query($this->getSqlQuery());
         $result = [];
@@ -108,18 +109,18 @@ class ORMSelection extends ORMQuery
                          ? $this->getColumns()
                          : array_keys($line) as $column)
             {
-                $lineObject->$column = $line[$column];
+                $lineObject->addPublicAttribute($column, $line[$column]);
             }
 
             foreach ($this->getRelationships() as $relationship)
             {
                 $relationshipRunning = call_user_func([$lineObject, $relationship]);
-                $lineObject->$relationship = $relationshipRunning;
+                $lineObject->addPublicAttribute($relationship, $relationshipRunning);
             }
 
             $result[] = $lineObject;
         }
 
-        return $result;
+        return new ModelCollection($result);
     }
 }

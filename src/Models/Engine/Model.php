@@ -15,10 +15,18 @@ class Model
     /** Model table name. */
     private string $tableName;
 
+    /**
+     * Public attributes that will be encoded
+     * to JSON for View usage.
+     */
+    private array $publicAttributes;
+
     public function __construct()
     {
         $inflector = new EnglishInflector();
+
         $this->tableName = $inflector->pluralize(Naming::camelToSnake(Naming::getClassNameByObject($this)))[0];
+        $this->publicAttributes = [];
     }
 
     /**
@@ -36,6 +44,28 @@ class Model
     public function setTableName(string $tableName): string
     {
         return $this->tableName = $tableName;
+    }
+
+    /**
+     * @return array Current public attributes
+     */
+    public function getPublicAttributes(): array
+    {
+        return $this->publicAttributes;
+    }
+
+    /**
+     * Adds a new public attribute.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return array Updated public attributes array
+     */
+    public function addPublicAttribute(string $key, mixed $value): array
+    {
+        $this->publicAttributes[$key] = $value;
+
+        return $this->getPublicAttributes();
     }
 
     /*
