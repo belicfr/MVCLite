@@ -22,7 +22,7 @@ class Debug
 
             var_dump($value);
 
-            echo "  </pre>
+            echo "</pre>
                   </div>";
         }
     }
