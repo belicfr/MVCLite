@@ -21,9 +21,7 @@ class Redirect
     {
         $route = Router::getRouteByPath($path);
 
-        $redirection = new RedirectResponse($route, $parameters);
-
-        return $redirection;
+        return new RedirectResponse($route, $parameters);
     }
 
     /**
@@ -36,8 +34,6 @@ class Redirect
     {
         $route = Router::getRouteByName($name);
 
-        $redirection = new RedirectResponse($route, $parameters);
-
-        return $redirection;
+        return new RedirectResponse($route, $parameters);
     }
 }
