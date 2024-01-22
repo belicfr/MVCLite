@@ -20,13 +20,32 @@ class IndexController extends Controller
 
     public function redirectToIndex(): void
     {
-        Redirect::route("index", [
+        Redirect::route("index.php", [
             "age"   => 19,
         ])
             ->redirect();
     }
 
-    public function render(): void
+    public function renderPhp(): void
+    {
+        $users = (new User())
+            ->select()
+            ->execute()
+            ->publish();
+
+        $count = (new User())
+            ->select("COUNT(*) as count")
+            ->execute()
+            ->publish()[0]
+            ->count;
+
+        View::nativeRender("Index", [
+            "users" => $users,
+            "count" => $count,
+        ]);
+    }
+
+    public function renderTwig(): void
     {
         $users = (new User())
             ->select()
