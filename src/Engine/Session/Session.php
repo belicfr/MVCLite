@@ -5,6 +5,8 @@ namespace MvcLite\Engine\Session;
 use MvcLite\Database\Engine\Database;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Engine\Security\Password;
+use MvcLite\Models\User;
+use stdClass;
 
 /**
  * Session manager class.
@@ -67,6 +69,27 @@ class Session
     private static function setSessionId(int $sessionId): void
     {
         $_SESSION[self::AUTH_SESSION_VARIABLE] = $sessionId;
+    }
+
+    /**
+     * @return stdClass|null Account User object if visitor is logged;
+     *                       else NULL
+     */
+    public static function getUserAccount(): stdClass|null
+    {
+        $user = [];
+
+        if (self::isLogged())
+        {
+            $user = User::select()
+                ->where("id", self::getSessionId())
+                ->execute()
+                ->publish();
+        }
+
+        return count($user)
+            ? $user[0]
+            : null;
     }
 
     public static function logout(): void
