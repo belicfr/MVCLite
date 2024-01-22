@@ -1,31 +1,11 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+#main {
+  @apply m-16;
+}
+#main h1 {
+  @apply text-4xl font-bold mb-10;
+}
+#main p.count {
+  @apply text-lg;
 }
 
-body {
-    background-color: #E6E6E6;
-
-    margin: 50px;
-
-    font-family: sans-serif;
-    text-align: center;
-}
-
-h1 {
-    font-weight: 900;
-    font-size: 4em;
-
-    margin-bottom: 30px;
-}
-
-p {
-    font-size: 1.5em;
-
-    margin-bottom: 30px;
-}
-
-p > strong {
-    font-weight: 900;
-}
+/*# sourceMappingURL=Index.css.map */
