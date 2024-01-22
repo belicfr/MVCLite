@@ -9,18 +9,18 @@ const DATABASE_CREDENTIALS = [
     "host"      =>  "localhost",
     "port"      =>  "3306",
     "charset"   =>  "utf8mb4",
-    "name"      =>  "festiplan",
-    "user"      =>  "utilisateur_festiplan",
-    "password"  =>  "US3RfEs.T1PL4N."
+    "name"      =>  "",
+    "user"      =>  "",
+    "password"  =>  ""
 
 ];
 
 const AUTHENTIFICATION_COLUMNS = [
 
-    "table"     => "utilisateur",
+    "table"     => "users",
 
-    "id"        => "id_utilisateur",
-    "login"     => "login_uti",
-    "password"  => "mdp_uti",
+    "id"        => "id",
+    "login"     => "name",
+    "password"  => "password",
 
 ];
