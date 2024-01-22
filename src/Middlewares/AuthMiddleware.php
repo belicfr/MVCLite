@@ -7,7 +7,7 @@ use MvcLite\Engine\Session\Session;
 use MvcLite\Middlewares\Engine\Middleware;
 use MvcLite\Router\Engine\Redirect;
 
-class GuestMiddleware extends Middleware
+class AuthMiddleware extends Middleware
 {
     public function __construct()
     {
@@ -18,9 +18,9 @@ class GuestMiddleware extends Middleware
 
     public function run(): bool
     {
-        if (Session::isLogged())
+        if (!Session::isLogged())
         {
-            Redirect::route("dashboard")
+            Redirect::route("home")
                 ->redirect();
 
             return false;
