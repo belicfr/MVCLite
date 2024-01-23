@@ -7,6 +7,6 @@ index.php
 .vscode/
 .DS_Store
 config.php
-Writerside/
+Writerside/*
 Writerside2/
 .phpdoc/
