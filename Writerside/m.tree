@@ -12,4 +12,10 @@
             <toc-element topic="Configure-MVCLite.md"/>
         </toc-element>
     </toc-element>
+    <toc-element topic="Your-MVCLite-first-steps.md">
+        <toc-element topic="Hello-World.md">
+            <toc-element topic="Your-first-view.md"/>
+            <toc-element topic="Your-first-controller.md"/>
+        </toc-element>
+    </toc-element>
 </instance-profile>
