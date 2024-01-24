@@ -5,8 +5,12 @@ namespace MvcLite\Database\Engine\ORM;
 use MvcLite\Models\Engine\ModelCollection;
 
 /**
- * Internal MVCLite ORM main class.
+ * Main MVCLite ORM class.
  *
+ * Allows to create various ORM query types like selection,
+ * insertion or deletion.
+ *
+ * @see ORMSelection
  * @author belicfr
  */
 class ORMQuery
@@ -56,6 +60,11 @@ class ORMQuery
     }
 
     /**
+     * Execute a null ORM query.
+     *
+     * Please use children class to get results.
+     *
+     * @see ORMSelection
      * @return ModelCollection Query execution result
      */
     public function execute(): ModelCollection

@@ -7,7 +7,10 @@ use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Models\Festival;
 
 /**
- * Pagination management class.
+ * Query result pagination class.
+ *
+ * This class allows to split result array by stack
+ * using specified maximum cardinality.
  *
  * @author belicfr
  */

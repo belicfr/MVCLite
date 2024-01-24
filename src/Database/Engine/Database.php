@@ -6,8 +6,12 @@ use Exception;
 use PDO;
 
 /**
- * Database manager class.
+ * Main database system class.
  *
+ * This class offers many utilities methods to use
+ * connected database securely.
+ *
+ * @see DatabaseQuery       Query representation
  * @author belicfr
  */
 class Database

@@ -9,6 +9,9 @@ use MvcLite\Models\Engine\ModelCollection;
 /**
  * ORM selection query class.
  *
+ * Allows to create a new select query using MVCLite ORM.
+ *
+ * @see ORMQuery
  * @author belicfr
  */
 class ORMSelection extends ORMQuery
@@ -59,7 +62,7 @@ class ORMSelection extends ORMQuery
     }
 
     /**
-     * Includes relationships to current request.
+     * Includes relationships to current query.
      *
      * @param string ...$relationships Relationships to use
      * @return $this
@@ -81,6 +84,16 @@ class ORMSelection extends ORMQuery
         return count($this->getConditions());
     }
 
+    /**
+     * Add a where condition clause to current query.
+     *
+     * @param string $column Column concerned by condition
+     * @param string $operatorOrValue Condition operator if there are three arguments;
+     *                                else condition value
+     * @param string|null $value Condition value if there are three arguments;
+     *                           else NULL
+     * @return $this Current ORM query instance
+     */
     public function where(string $column, string $operatorOrValue, ?string $value = null): ORMSelection
     {
         $sqlWhereClause = $value === null
@@ -93,7 +106,10 @@ class ORMSelection extends ORMQuery
     }
 
     /**
-     * @return ModelCollection Query execution result
+     * Send generated SQL query by using Database class.
+     * It returns the SQL query results as a models collection object.
+     *
+     * @return ModelCollection Query execution result collection
      */
     public function execute(): ModelCollection
     {

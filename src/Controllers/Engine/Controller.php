@@ -4,6 +4,15 @@ namespace MvcLite\Controllers\Engine;
 
 use MvcLite\Middlewares\Engine\Middleware;
 
+/**
+ * As part of the framework, the controller serves as the
+ * intermediary between the view and the model.
+ *
+ * It is responsible for the logical aspects of a page and for
+ * facilitating the communication of dynamic data, referred to as properties or props, to the views.
+ *
+ * @author belicfr
+ */
 class Controller
 {
     public function __construct()
@@ -12,7 +21,9 @@ class Controller
     }
 
     /**
-     * @param string $middleware Middleware class
+     * Run a middleware.
+     *
+     * @param string $middleware
      */
     protected function middleware(string $middleware): void
     {

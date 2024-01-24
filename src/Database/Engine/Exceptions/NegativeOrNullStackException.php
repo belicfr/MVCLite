@@ -2,8 +2,18 @@
 
 namespace MvcLite\Database\Engine\Exceptions;
 
+use MvcLite\Database\Engine\Pagination;
 use MvcLite\Engine\MvcLiteException;
 
+/**
+ * MVCLite core exception.
+ *
+ * This exception must be thrown if pagination is created
+ * for database results using a negative or null stacking.
+ *
+ * @see Pagination
+ * @author belicfr
+ */
 class NegativeOrNullStackException extends MvcLiteException
 {
     public function __construct()

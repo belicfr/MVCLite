@@ -2,8 +2,18 @@
 
 namespace MvcLite\Database\Engine\Exceptions;
 
+use MvcLite\Database\Engine\Database;
 use MvcLite\Engine\MvcLiteException;
 
+/**
+ * MVCLite core exception.
+ *
+ * This exception must be thrown if a non-existent column
+ * in a SQL query using Database class.
+ *
+ * @see Database::query()
+ * @author belicfr
+ */
 class ColumnNotFoundException extends MvcLiteException
 {
     public function __construct(string $column, string $query)

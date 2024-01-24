@@ -9,6 +9,15 @@ use MvcLite\Engine\DevelopmentUtilities\Debug;
 use PDOException;
 use PDOStatement;
 
+/**
+ * Secondary database management class that represents
+ * a database query by using Database::query() method.
+ *
+ * This class enriches querying using MVCLite database manager system.
+ *
+ * @see Database        Main database management class
+ * @author belicfr
+ */
 class DatabaseQuery
 {
     /** Current SQL query. */
@@ -44,9 +53,9 @@ class DatabaseQuery
     }
 
     /**
-     * Prepare SQL query.
+     * Prepare the current SQL query.
      *
-     * @return PDOStatement Prepared SQL query PDO object
+     * @return PDOStatement
      */
     private function prepareQuery(): PDOStatement
     {
@@ -56,9 +65,9 @@ class DatabaseQuery
     }
 
     /**
-     * Execute SQL query.
+     * Execute the current SQL query.
      *
-     * @return bool PDO execution state
+     * @return bool If the request sent did not result in any errors
      */
     private function executeQuery(): bool
     {
@@ -67,7 +76,7 @@ class DatabaseQuery
     }
 
     /**
-     * @return array All SQL query results
+     * @return array SQL query results array
      */
     public function getAll(): array
     {
