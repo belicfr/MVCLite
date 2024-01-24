@@ -7,7 +7,7 @@
 >
     <title>MVCLite</title>
     <paths>
-        <output>docs</output>
+        <output>../mvclite-docs/docs</output>
         <cache>build/cache</cache>
     </paths>
     <version number="latest">
