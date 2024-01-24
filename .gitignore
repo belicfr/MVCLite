@@ -1,7 +1,6 @@
 /vendor/
 /src/Database/connection.php
 /node_modules/
-index.php
 .htaccess
 .idea/
 .vscode/
