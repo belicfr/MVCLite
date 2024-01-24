@@ -10,3 +10,4 @@ config.php
 Writerside/*
 Writerside2/
 .phpdoc/
+build/
