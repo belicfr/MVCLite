@@ -1,5 +1,4 @@
 /vendor/
-/src/Database/connection.php
 /node_modules/
 .htaccess
 .idea/
