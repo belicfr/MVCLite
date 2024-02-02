@@ -41,11 +41,13 @@ class View
 
         $routeFunction = new TwigFunction("route", fn ($routeName) => route($routeName));
         $requestFunction = new TwigFunction("request", fn () => request());
+        $deliveryFunction = new TwigFunction("delivery", fn () => delivery());
         $getFunction = new TwigFunction("get", fn ($key) => get($key));
         $postFunction = new TwigFunction("post", fn ($key) => post($key));
 
         $twigEnvironment->addFunction($routeFunction);
         $twigEnvironment->addFunction($requestFunction);
+        $twigEnvironment->addFunction($deliveryFunction);
         $twigEnvironment->addFunction($getFunction);
         $twigEnvironment->addFunction($postFunction);
 
