@@ -105,8 +105,6 @@ class Router
         $controllerInstance = new ($route->getController());
         $request = new Request();
 
-        Debug::dump($request);
-
         if (!method_exists($controllerInstance, $route->getMethod()))
         {
             $error = new UndefinedControllerMethodException($route->getController(), $route->getMethod());
