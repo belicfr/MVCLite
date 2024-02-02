@@ -4,6 +4,7 @@ namespace MvcLite\Views\Engine;
 
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Engine\InternalResources\Delivery;
+use MvcLite\Engine\InternalResources\Storage;
 use MvcLite\Engine\Session\Session;
 use MvcLite\Router\Engine\Request;
 use MvcLite\Views\Engine\Exceptions\NotFoundViewException;
@@ -44,12 +45,22 @@ class View
         $deliveryFunction = new TwigFunction("delivery", fn () => delivery());
         $getFunction = new TwigFunction("get", fn ($key) => get($key));
         $postFunction = new TwigFunction("post", fn ($key) => post($key));
+        $resourceFunction = new TwigFunction(
+            "resource",
+            fn ($rpath, $type = "", $importMethod = "") => Storage::include($rpath, $type, $importMethod),
+            [
+                "is_safe" => [
+                    "html",
+                ],
+            ]
+        );
 
         $twigEnvironment->addFunction($routeFunction);
         $twigEnvironment->addFunction($requestFunction);
         $twigEnvironment->addFunction($deliveryFunction);
         $twigEnvironment->addFunction($getFunction);
         $twigEnvironment->addFunction($postFunction);
+        $twigEnvironment->addFunction($resourceFunction);
 
         echo $twigEnvironment->render("$viewPath.twig", $props);
     }
