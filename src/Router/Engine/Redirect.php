@@ -3,6 +3,7 @@
 namespace MvcLite\Router\Engine;
 
 use MvcLite\Engine\DevelopmentUtilities\Debug;
+use MvcLite\Router\Engine\Exceptions\UndefinedRouteException;
 
 /**
  * Redirection management class.
@@ -33,6 +34,12 @@ class Redirect
     public static function route(string $name, array $parameters = []): RedirectResponse
     {
         $route = Router::getRouteByName($name);
+
+        if ($route === null)
+        {
+            $error = new UndefinedRouteException();
+            $error->render();
+        }
 
         return new RedirectResponse($route, $parameters);
     }
