@@ -2,7 +2,6 @@
 
 namespace MvcLite\Engine\InternalResources;
 
-use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Engine\Entities\Image;
 use MvcLite\Engine\InternalResources\Exceptions\InvalidImportMethodException;
 use MvcLite\Engine\InternalResources\Exceptions\InvalidResourceTypeException;
@@ -100,7 +99,7 @@ class Storage
             $error->render();
         }
 
-        echo $html;
+        //echo $html;
 
         return $html;
     }
