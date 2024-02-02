@@ -10,6 +10,7 @@ use MvcLite\Views\Engine\Exceptions\NotFoundViewException;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
 class View
 {
@@ -37,6 +38,16 @@ class View
 
         $twigLoader = new FilesystemLoader("./src/Views");
         $twigEnvironment = new Environment($twigLoader);
+
+        $routeFunction = new TwigFunction("route", fn ($routeName) => route($routeName));
+        $requestFunction = new TwigFunction("request", fn () => request());
+        $getFunction = new TwigFunction("get", fn ($key) => get($key));
+        $postFunction = new TwigFunction("post", fn ($key) => post($key));
+
+        $twigEnvironment->addFunction($routeFunction);
+        $twigEnvironment->addFunction($requestFunction);
+        $twigEnvironment->addFunction($getFunction);
+        $twigEnvironment->addFunction($postFunction);
 
         echo $twigEnvironment->render("$viewPath.twig", $props);
     }
