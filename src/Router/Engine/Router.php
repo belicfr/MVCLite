@@ -105,6 +105,8 @@ class Router
         $controllerInstance = new ($route->getController());
         $request = new Request();
 
+        Debug::dump($request);
+
         if (!method_exists($controllerInstance, $route->getMethod()))
         {
             $error = new UndefinedControllerMethodException($route->getController(), $route->getMethod());
@@ -112,16 +114,6 @@ class Router
         }
 
         call_user_func([$controllerInstance, $route->getMethod()], $request);
-
-        Delivery::get()
-            ->incrementRoutingIterationCount()
-            ->save();
-
-        if (Delivery::get()->mustBeDestroyed())
-        {
-            (new Delivery())
-                ->save();
-        }
     }
 
     /**

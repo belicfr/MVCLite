@@ -32,3 +32,5 @@ if (!isset($_GET["route"]))
 $route = Router::getRouteByPath('/' . $_GET["route"]);
 Router::useRoute($route);
 
+(new Delivery())
+    ->save();
