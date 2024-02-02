@@ -29,33 +29,42 @@ function route(string $name, array $parameters = []): string
 }
 
 /**
- * @return Request Current Request object
+ * @return Delivery|null Current Delivery object
+ */
+function delivery(): ?Delivery
+{
+    return Delivery::get();
+}
+
+/**
+ * @return Request
  */
 function request(): Request
 {
-    return Delivery::get()
-        ->getRequest();
+    return new Request();
 }
 
 /**
  * @param string $key GET parameter key
- * @return string GET parameter value
+ * @return string|null GET parameter value
  */
-function get(string $key): string
+function get(string $key): ?string
 {
     return request()->getParameter($key);
 }
 
 /**
  * @param string $key POST input key
- * @return string POST input value
+ * @return string|null POST input value
  */
-function post(string $key): string
+function post(string $key): ?string
 {
     return request()->getInput($key);
 }
 
 /**
+ * @deprecated
+ * @see Request::getUri()
  * @return string Current URI
  */
 function uri(): string
