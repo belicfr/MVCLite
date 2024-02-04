@@ -57,7 +57,7 @@ class View
         );
         $mediaFunction = new TwigFunction("media", function ($subPath)
         {
-            return Storage::getResourcesPath() . "/Medias/$subPath";
+            return "/src/Resources/Medias/$subPath";
         });
 
         $twigEnvironment->addFunction($routeFunction);
