@@ -3,6 +3,7 @@
 namespace MvcLite\Views\Engine;
 
 use MvcLite\Engine\DevelopmentUtilities\Debug;
+use MvcLite\Engine\Entities\Image;
 use MvcLite\Engine\InternalResources\Delivery;
 use MvcLite\Engine\InternalResources\Storage;
 use MvcLite\Engine\Session\Session;
@@ -54,6 +55,10 @@ class View
                 ],
             ]
         );
+        $mediaFunction = new TwigFunction("media", function ($subPath)
+        {
+            return Storage::getResourcesPath() . "/Medias$subPath";
+        });
 
         $twigEnvironment->addFunction($routeFunction);
         $twigEnvironment->addFunction($requestFunction);
@@ -61,6 +66,7 @@ class View
         $twigEnvironment->addFunction($getFunction);
         $twigEnvironment->addFunction($postFunction);
         $twigEnvironment->addFunction($resourceFunction);
+        $twigEnvironment->addFunction($mediaFunction);
 
         echo $twigEnvironment->render("$viewPath.twig", $props);
     }
