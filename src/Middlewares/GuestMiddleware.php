@@ -9,13 +9,6 @@ use MvcLite\Router\Engine\Redirect;
 
 class GuestMiddleware extends Middleware
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        // Empty constructor.
-    }
-
     public function run(): bool
     {
         if (Session::isLogged())
