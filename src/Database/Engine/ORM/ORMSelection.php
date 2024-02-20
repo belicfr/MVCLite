@@ -133,15 +133,14 @@ class ORMSelection extends ORMQuery
     /**
      * Add an order by clause to current query.
      *
-     * @param string ...$columnsRules Ordering rules
+     * @param array ...$columnsRules
      * @return $this Current ORM query instance
      */
-    public function orderBy(string ...$columnsRules): ORMSelection
-                            // column, ordtype
+    public function orderBy(array ...$columnsRules): ORMSelection
     {
         foreach ($columnsRules as $rule)
         {
-            $this->ordering[] = $rule;
+            $this->ordering[] = "$rule[0] $rule[1]";
         }
 
         return $this;
