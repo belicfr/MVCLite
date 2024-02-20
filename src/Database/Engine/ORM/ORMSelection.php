@@ -60,7 +60,7 @@ class ORMSelection extends ORMQuery
 
         if ($this->hasOrdering())
         {
-            $ordering = implode(', ', $this->getOrdering())
+            $ordering = implode(', ', $this->getOrdering());
             $clause = sprintf(self::ORDER_BY_CLAUSE_TEMPLATE, $ordering);
             $sql .= " $clause";
         }
