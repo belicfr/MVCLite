@@ -3,6 +3,7 @@
 namespace MvcLite\Database\Engine\ORM;
 
 use MvcLite\Database\Engine\Database;
+use MvcLite\Database\Engine\Exceptions\NegativeOrNullLimitException;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Models\Engine\ModelCollection;
 
@@ -34,12 +35,17 @@ class ORMSelection extends ORMQuery
     /** Given ORDER BY clauses. */
     private array $ordering;
 
+    /** Given LIMIT clause. */
+    private ?int $limit;
+
     public function __construct(string $modelClass, array $columns)
     {
         parent::__construct($modelClass, $columns);
 
         $this->relationships = [];
         $this->conditions = [];
+        $this->ordering = [];
+        $this->limit = null;
     }
 
     /**
@@ -109,6 +115,16 @@ class ORMSelection extends ORMQuery
         return count($this->getOrdering());
     }
 
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    public function hasLimit(): bool
+    {
+        return $this->limit !== null;
+    }
+
     /**
      * Add a where condition clause to current query.
      *
@@ -142,6 +158,26 @@ class ORMSelection extends ORMQuery
         {
             $this->ordering[] = "$rule[0] $rule[1]";
         }
+
+        return $this;
+    }
+
+    /**
+     * Add a limit clause to current query.
+     *
+     * @param int $limit Maximum lines to return
+     * @return $this Current ORM query instance
+     * @throws NegativeOrNullLimitException If given limit value is
+     *                                      <= 0
+     */
+    public function limit(int $limit): ORMSelection
+    {
+        if ($limit <= 0)
+        {
+            throw new NegativeOrNullLimitException($this->getSqlQuery());
+        }
+
+        $this->limit = $limit;
 
         return $this;
     }
