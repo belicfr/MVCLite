@@ -22,11 +22,17 @@ class ORMSelection extends ORMQuery
     private const WHERE_CLAUSE_TEMPLATE
         = "WHERE %s";
 
+    private const ORDER_BY_CLAUSE_TEMPLATE
+        = "ORDER BY %s";
+
     /** Linked relationships. */
     private array $relationships;
 
     /** Given WHERE clauses. */
     private array $conditions;
+
+    /** Given ORDER BY clauses. */
+    private array $ordering;
 
     public function __construct(string $modelClass, array $columns)
     {
@@ -47,7 +53,16 @@ class ORMSelection extends ORMQuery
 
         if ($this->hasConditions())
         {
-            $sql .= " WHERE " . implode(" AND ", $this->getConditions());
+            $conditions = implode(" AND ", $this->getConditions());
+            $clause = sprintf(self::WHERE_CLAUSE_TEMPLATE, $conditions);
+            $sql .= " $clause";
+        }
+
+        if ($this->hasOrdering())
+        {
+            $ordering = implode(', ', $this->getOrdering())
+            $clause = sprintf(self::ORDER_BY_CLAUSE_TEMPLATE, $ordering);
+            $sql .= " $clause";
         }
 
         return $sql;
@@ -84,6 +99,16 @@ class ORMSelection extends ORMQuery
         return count($this->getConditions());
     }
 
+    public function getOrdering(): array
+    {
+        return $this->ordering;
+    }
+
+    public function hasOrdering(): bool
+    {
+        return count($this->getOrdering());
+    }
+
     /**
      * Add a where condition clause to current query.
      *
@@ -101,6 +126,23 @@ class ORMSelection extends ORMQuery
             : "$column $operatorOrValue $value";
 
         $this->conditions[] = $sqlWhereClause;
+
+        return $this;
+    }
+
+    /**
+     * Add an order by clause to current query.
+     *
+     * @param string ...$columnsRules Ordering rules
+     * @return $this Current ORM query instance
+     */
+    public function orderBy(string ...$columnsRules): ORMSelection
+                            // column, ordtype
+    {
+        foreach ($columnsRules as $rule)
+        {
+            $this->ordering[] = $rule;
+        }
 
         return $this;
     }
