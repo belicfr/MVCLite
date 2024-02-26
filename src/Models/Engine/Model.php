@@ -3,6 +3,7 @@
 namespace MvcLite\Models\Engine;
 
 use JsonSerializable;
+use MvcLite\Database\Engine\ORM\ORMDeletion;
 use MvcLite\Database\Engine\ORM\ORMInsertion;
 use MvcLite\Database\Engine\ORM\ORMSelection;
 use MvcLite\Database\Engine\ORM\ORMUpdate;
@@ -133,7 +134,9 @@ class Model implements JsonSerializable
 
     public function delete(): void
     {
-
+        $deleteQuery = new ORMDeletion(static::class);
+        $deleteQuery->where("id", $this->getPublicAttributes()["id"])
+                    ->execute();
     }
 
     /*
