@@ -5,6 +5,7 @@ namespace MvcLite\Database\Engine\ORM;
 use MvcLite\Database\Engine\Database;
 use MvcLite\Database\Engine\Exceptions\NegativeOrNullLimitException;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
+use MvcLite\Models\Engine\Model;
 use MvcLite\Models\Engine\ModelCollection;
 
 /**
