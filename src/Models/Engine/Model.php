@@ -4,6 +4,8 @@ namespace MvcLite\Models\Engine;
 
 use JsonSerializable;
 use MvcLite\Database\Engine\ORM\ORMSelection;
+use MvcLite\Database\Engine\ORM\ORMUpdate;
+use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Engine\Precepts\Naming;
 use MvcLite\Models\Engine\Relationships\BelongsTo;
 use MvcLite\Models\Engine\Relationships\HasMany;
@@ -103,6 +105,22 @@ class Model implements JsonSerializable
         $ormClause->where("id", $id);
 
         return $ormClause;
+    }
+
+    public function update(array $updates): Model
+    {
+        $updateQuery = new ORMUpdate(static::class);
+
+        foreach ($updates as $column => $value)
+        {
+            $updateQuery->addUpdate($column, $value);
+            $this->publicAttributes[$column] = $value;
+        }
+
+        $updateQuery->where("id", $this->getPublicAttributes()["id"])
+                    ->execute();
+
+        return $this;
     }
 
     /*
