@@ -41,7 +41,9 @@ class Request
 
         foreach ($_POST as $inputKey => $inputValue)
         {
-            $inputs[$inputKey] = htmlspecialchars($inputValue);
+            $inputs[$inputKey] = is_string($inputValue)
+                ? htmlspecialchars($inputValue)
+                : $inputValue;
         }
 
         return $this->inputs = $inputs;
@@ -57,11 +59,11 @@ class Request
 
     /**
      * @param string $key Input key
-     * @param bool $neutralize If input value must be neutralized
-     * @return string|null Input value if exists;
-     *                     else NULL
+     * @param bool $neutralize If input value (string) must be neutralized
+     * @return mixed Input value if exists;
+     *               else NULL
      */
-    public function getInput(string $key, bool $neutralize = true): ?string
+    public function getInput(string $key, bool $neutralize = true): mixed
     {
         if (!in_array($key, array_keys($this->getInputs())))
         {
@@ -70,9 +72,9 @@ class Request
 
         $input = $this->getInputs()[$key];
 
-        return $neutralize
-            ? $input
-            : htmlspecialchars_decode($input);
+        return !$neutralize && is_string($input)
+            ? htmlspecialchars_decode($input)
+            : $input;
     }
 
     /**
