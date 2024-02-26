@@ -2,10 +2,9 @@
 
 session_start();
 
-use MvcLite\Engine\InternalResources\Delivery;
-use MvcLite\Engine\InternalResources\Storage;
-use MvcLite\Router\Engine\Exceptions\NoneRouteException;
-use MvcLite\Router\Engine\Router;
+use MvcliteCore\Engine\InternalResources\Delivery;
+use MvcliteCore\Router\Exceptions\NoneRouteException;
+use MvcliteCore\Router\Router;
 
 require_once "vendor/autoload.php";
 
@@ -21,7 +20,7 @@ require_once "src/Database/connection.php";
 
 require_once "src/Router/reserved.php";
 require_once "src/Router/routes.php";
-require_once "src/Router/Engine/utilities.php";
+require_once "vendor/belicfr/mvclite-core/src/Router/utilities.php";
 
 if (!isset($_GET["route"]))
 {

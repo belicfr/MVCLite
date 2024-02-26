@@ -2,7 +2,7 @@
 
 namespace MvcLite\Controllers\InternalControllers;
 
-use MvcLite\Engine\InternalResources\Storage;
+use MvcliteCore\Engine\InternalResources\Storage;
 
 /**
  * Controller used by core debugging.

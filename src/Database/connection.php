@@ -8,8 +8,8 @@
  * to use your databse properly.
  */
 
-use MvcLite\Database\Engine\Database;
-use MvcLite\Database\Engine\Exceptions\FailedConnectionToDatabaseException;
+use MvcliteCore\Database\Database;
+use MvcliteCore\Database\Exceptions\FailedConnectionToDatabaseException;
 
 const DATABASE_CONNECTION_ERROR = "Database connection error";
 

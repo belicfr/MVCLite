@@ -15,9 +15,7 @@
         }
     ],
     "require": {
-        "ext-pdo": "*",
-        "symfony/string": "^7.0",
-        "twig/twig": "^3.0"
+        "belicfr/mvclite-core": "*"
     },
     "require-dev": {
         "saggre/phpdocumentor-markdown": "^0.1.4"
