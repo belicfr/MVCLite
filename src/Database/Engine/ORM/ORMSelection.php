@@ -27,6 +27,9 @@ class ORMSelection extends ORMQuery
     private const ORDER_BY_CLAUSE_TEMPLATE
         = "ORDER BY %s";
 
+    /** Table columns used by query. */
+    private array $columns;
+
     /** Linked relationships. */
     private array $relationships;
 
@@ -41,18 +44,36 @@ class ORMSelection extends ORMQuery
 
     public function __construct(string $modelClass, array $columns)
     {
-        parent::__construct($modelClass, $columns);
+        parent::__construct($modelClass);
 
-        $sqlQueryBase = sprintf(self::BASE_SQL_QUERY_TEMPLATE,
-            parent::getImplodedColumns(),
-            ($this->getModelClass())::getTableName());
-
-        $this->addSql($sqlQueryBase);
-
+        $this->columns = $columns;
         $this->relationships = [];
         $this->conditions = [];
         $this->ordering = [];
         $this->limit = null;
+
+        $sqlQueryBase = sprintf(self::BASE_SQL_QUERY_TEMPLATE,
+            $this->getImplodedColumns(),
+            ($this->getModelClass())::getTableName());
+
+        $this->addSql($sqlQueryBase);
+
+    }
+
+    /**
+     * @return array Table columns used by query
+     */
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
+     * @return string Imploded table columns used by query
+     */
+    protected function getImplodedColumns(): string
+    {
+        return implode(', ', $this->getColumns());
     }
 
     /**
