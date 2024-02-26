@@ -57,11 +57,11 @@ class Request
 
     /**
      * @param string $key Input key
-     * @param bool $neutralize If input value must be neutralized
-     * @return string|null Input value if exists;
-     *                     else NULL
+     * @param bool $neutralize If input value (string) must be neutralized
+     * @return mixed Input value if exists;
+     *               else NULL
      */
-    public function getInput(string $key, bool $neutralize = true): ?string
+    public function getInput(string $key, bool $neutralize = true): mixed
     {
         if (!in_array($key, array_keys($this->getInputs())))
         {
@@ -70,7 +70,7 @@ class Request
 
         $input = $this->getInputs()[$key];
 
-        return $neutralize
+        return $neutralize && is_string($input)
             ? $input
             : htmlspecialchars_decode($input);
     }
