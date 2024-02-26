@@ -70,9 +70,9 @@ class Request
 
         $input = $this->getInputs()[$key];
 
-        return $neutralize && is_string($input)
-            ? $input
-            : htmlspecialchars_decode($input);
+        return !$neutralize && is_string($input)
+            ? htmlspecialchars_decode($input)
+            : $input;
     }
 
     /**
