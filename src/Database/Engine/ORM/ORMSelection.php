@@ -117,10 +117,7 @@ class ORMSelection extends ORMQuery
      */
     public function where(string $column, string $operatorOrValue, ?string $value = null): ORMSelection
     {
-        $sqlWhereClause = $value === null
-            ? "$column = $operatorOrValue"
-            : "$column $operatorOrValue $value";
-
+        $sqlWhereClause = $this->prepareWhereClauseLine($column, $operatorOrValue, $value);
         $sqlWhereClause = $this->hasConditions()
             ? "AND $sqlWhereClause"
             : "WHERE $sqlWhereClause";
@@ -129,6 +126,26 @@ class ORMSelection extends ORMQuery
         $this->conditions[] = $sqlWhereClause;
 
         return $this;
+    }
+
+    public function orWhere(string $column, string $operatorOrValue, ?string $value = null): ORMSelection
+    {
+        $sqlWhereClause = $this->prepareWhereClauseLine($column, $operatorOrValue, $value);
+        $sqlWhereClause = $this->hasConditions()
+            ? "OR $sqlWhereClause"
+            : "WHERE $sqlWhereClause";
+
+        $this->addSql($sqlWhereClause);
+        $this->conditions[] = $sqlWhereClause;
+
+        return $this;
+    }
+
+    private function prepareWhereClauseLine(string $column, $operatorOrValue, ?string $value = null): string
+    {
+        return $sqlWhereClause = $value === null
+            ? "$column = $operatorOrValue"
+            : "$column $operatorOrValue $value";
     }
 
     /**
@@ -141,7 +158,7 @@ class ORMSelection extends ORMQuery
     public function orderBy(string $column, string $order = "ASC"): ORMSelection
     {
         $order = strtoupper($order);
-        
+
         $orderingClause = $this->hasOrdering()
             ? ", $column $order"
             : "ORDER BY $column $order";
