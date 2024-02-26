@@ -41,7 +41,9 @@ class Request
 
         foreach ($_POST as $inputKey => $inputValue)
         {
-            $inputs[$inputKey] = htmlspecialchars($inputValue);
+            $inputs[$inputKey] = is_string($inputValue)
+                ? htmlspecialchars($inputValue)
+                : $inputValue;
         }
 
         return $this->inputs = $inputs;
