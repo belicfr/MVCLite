@@ -4,6 +4,7 @@ namespace MvcLite\Database\Engine\ORM;
 
 use MvcLite\Database\Engine\Database;
 use MvcLite\Database\Engine\Exceptions\NegativeOrNullLimitException;
+use MvcLite\Database\Engine\Exceptions\RelationshipDoesNotExistException;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
 use MvcLite\Models\Engine\Model;
 use MvcLite\Models\Engine\ModelCollection;
@@ -234,6 +235,12 @@ class ORMSelection extends ORMQuery
 
             foreach ($this->getRelationships() as $relationship)
             {
+                if (!method_exists($lineObject, $relationship))
+                {
+                    $error = new RelationshipDoesNotExistException($relationship);
+                    $error->render();
+                }
+
                 $relationshipRunning = call_user_func([$lineObject, $relationship]);
                 $lineObject->addPublicAttribute($relationship, $relationshipRunning);
             }
