@@ -2,7 +2,7 @@
     "name": "belicfr/mvclite",
     "type": "project",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "MvcLite\\": "src/"
