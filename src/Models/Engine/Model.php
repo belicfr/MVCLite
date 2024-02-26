@@ -3,6 +3,7 @@
 namespace MvcLite\Models\Engine;
 
 use JsonSerializable;
+use MvcLite\Database\Engine\ORM\ORMInsertion;
 use MvcLite\Database\Engine\ORM\ORMSelection;
 use MvcLite\Database\Engine\ORM\ORMUpdate;
 use MvcLite\Engine\DevelopmentUtilities\Debug;
@@ -84,6 +85,13 @@ class Model implements JsonSerializable
      * ************  MVCLite ORM PART  ************
      */
 
+    public static function create(array $values): Model
+    {
+        $insertion = new ORMInsertion(static::class, $values);
+
+        return $insertion->execute();
+    }
+
     public static function select(string ...$columns): ORMSelection
     {
         if (!count($columns))
@@ -121,6 +129,11 @@ class Model implements JsonSerializable
                     ->execute();
 
         return $this;
+    }
+
+    public function delete(): void
+    {
+
     }
 
     /*
