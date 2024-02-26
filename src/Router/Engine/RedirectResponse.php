@@ -19,6 +19,8 @@ class RedirectResponse
     /** Current delivery object. */
     private Delivery $currentDelivery;
 
+    private array $parameters;
+
     public function __construct(Route $route, array $parameters)
     {
         $this->route = $route;
@@ -32,6 +34,11 @@ class RedirectResponse
     public function getRoute(): Route
     {
         return $this->route;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
     }
 
     /**
