@@ -1,0 +1,153 @@
+<?php
+
+const CONTROLLER_TEMPLATE = "<?php
+
+namespace MvcLite\Controllers;
+
+use MvcliteCore\Controllers\Controller;
+use MvcliteCore\Router\Request;
+
+class %s extends Controller
+{
+    public function __construct() 
+    {
+        parent::__construct();
+    }
+}";
+
+const MODEL_TEMPLATE = "<?php
+
+namespace MvcLite\Models;
+
+use MvcliteCore\Models\Model;
+
+class %s extends Model
+{
+    public function __construct() 
+    {
+        parent::__construct();
+    }
+}";
+
+if ($argc < 2)
+{
+    errorNoneInstruction();
+}
+
+$instruction = $argv[1];
+
+switch ($instruction)
+{
+    case "new:controller":  //  php project new:controller MyController
+        newConstructor();
+        break;
+
+    case "new:model":
+        newModel();
+        break;
+
+    default:
+        die;
+}
+
+function newConstructor(): void
+{
+    global $argc, $argv;
+
+    if ($argc < 3)
+    {
+        errorNoneControllerName();
+    }
+
+    $controllerName = $argv[2];
+    $controllerSubpathSplit = explode('/', $controllerName);
+    $controllerFilenameSubPath
+        = implode('/', array_slice($controllerSubpathSplit, 0, -1));
+    $controllerFilenameWithoutExtension = end($controllerSubpathSplit);
+    $controllerParentPath = "src/Controllers/$controllerFilenameSubPath";
+    $controllerFilename = "$controllerFilenameWithoutExtension.php";
+
+    if (!is_dir($controllerParentPath) && !mkdir($controllerParentPath, recursive: true))
+    {
+        errorCannotCreateController($controllerName);
+    }
+
+    $controller = fopen($controllerParentPath . '/' . $controllerFilename, 'w');
+    $controllerContent = sprintf(CONTROLLER_TEMPLATE, $controllerFilenameWithoutExtension);
+
+    if (!$controller || fwrite($controller, $controllerContent) === false)
+    {
+        errorCannotCreateController($controllerName);
+    }
+
+    fclose($controller);
+
+    echo "$controllerName controller successfully created.";
+    die;
+}
+
+function newModel(): void
+{
+    global $argc, $argv;
+
+    if ($argc < 3)
+    {
+        errorNoneModelName();
+    }
+
+    $modelName = $argv[2];
+    $modelSubpathSplit = explode('/', $modelName);
+    $modelFilenameSubPath
+        = implode('/', array_slice($modelSubpathSplit, 0, -1));
+    $modelFilenameWithoutExtension = end($modelSubpathSplit);
+    $modelParentPath = "src/Models/$modelFilenameSubPath";
+    $modelFilename = "$modelFilenameWithoutExtension.php";
+
+    if (!is_dir($modelParentPath) && !mkdir($modelParentPath, recursive: true))
+    {
+        errorCannotCreateModel($modelName);
+    }
+
+    $model = fopen($modelParentPath . '/' . $modelFilename, 'w');
+    $modelContent = sprintf(MODEL_TEMPLATE, $modelFilenameWithoutExtension);
+
+    if (!$model || fwrite($model, $modelContent) === false)
+    {
+        errorCannotCreateModel($modelName);
+    }
+
+    fclose($model);
+
+    echo "$modelName model successfully created.";
+    die;
+}
+
+function errorCannotCreateController(string $controllerName): void
+{
+    echo "[ERROR] $controllerName controller cannot be created.";
+    die;
+}
+
+function errorNoneControllerName()
+{
+    echo "[ERROR] No name has been given for the controller to be created.";
+    die;
+}
+
+function errorCannotCreateModel(string $modelName): void
+{
+    echo "[ERROR] $modelName model cannot be created.";
+    die;
+}
+
+function errorNoneModelName()
+{
+    echo "[ERROR] No name has been given for the model to be created.";
+    die;
+}
+
+function errorNoneInstruction()
+{
+    echo "[ERROR] None instruction is given.";
+    die;
+}
