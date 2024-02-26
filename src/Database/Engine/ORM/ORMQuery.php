@@ -21,10 +21,14 @@ class ORMQuery
     /** Table columns used by query. */
     private array $columns;
 
+    /** Generated SQL query. */
+    private string $sql;
+
     public function __construct(string $modelClass, array $columns)
     {
         $this->modelClass = $modelClass;
         $this->columns = $columns;
+        $this->sql = "";
     }
 
     /**
@@ -54,9 +58,27 @@ class ORMQuery
     /**
      * @return string Generated SQL query
      */
-    public function getSqlQuery(): string
+    public function getSql(): string
     {
-        return "SELECT NULL";
+        return $this->sql;
+    }
+
+    /**
+     * Appends to SQL query the given line.
+     *
+     * @param string $line
+     * @return string Updated SQL query
+     */
+    public function addSql(string $line): string
+    {
+        if (strlen($this->getSql()))
+        {
+            $this->sql .= ' ';
+        }
+
+        $this->sql .= $line;
+
+        return $this->getSql();
     }
 
     /**
