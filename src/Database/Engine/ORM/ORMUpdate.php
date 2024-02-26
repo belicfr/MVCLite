@@ -24,9 +24,6 @@ class ORMUpdate extends ORMQuery
     /** Updates to do. */
     private array $updates;
 
-    /** Values given for updating. */
-    private array $updatesValues;
-
     /** Given WHERE clauses. */
     private array $conditions;
 
@@ -70,14 +67,6 @@ class ORMUpdate extends ORMQuery
     }
 
     /**
-     * @return array Values used for line updating
-     */
-    public function getUpdatesValues(): array
-    {
-        return $this->updatesValues;
-    }
-
-    /**
      * Appends an update to current ORM update query.
      *
      * @param string $column
@@ -92,7 +81,7 @@ class ORMUpdate extends ORMQuery
 
         $this->addSql($update);
         $this->updates[] = $update;
-        $this->updatesValues[] = $value;
+        $this->addParameter($value);
 
         return $this;
     }
@@ -109,35 +98,40 @@ class ORMUpdate extends ORMQuery
      */
     public function where(string $column, string $operatorOrValue, ?string $value = null): ORMUpdate
     {
-        $sqlWhereClause = $this->prepareWhereClauseLine($column, $operatorOrValue, $value);
-        $sqlWhereClause = $this->hasConditions()
-            ? "AND $sqlWhereClause"
-            : "WHERE $sqlWhereClause";
+        $isOperatorGiven = $value !== null;
 
+        $whereExpression = $isOperatorGiven
+            ? "$column $operatorOrValue ?"
+            : "$column = ?";
+
+        $sqlWhereClause = $this->hasConditions()
+            ? "AND $whereExpression"
+            : "WHERE $whereExpression";
+
+        $this->addParameter($isOperatorGiven ? $value : $operatorOrValue);
         $this->addSql($sqlWhereClause);
         $this->conditions[] = $sqlWhereClause;
 
         return $this;
     }
 
-    public function orWhere(string $column, string $operatorOrValue, ?string $value = null): ORMUpdate
+    public function orWhere(string $column, mixed $operatorOrValue, mixed $value = null): ORMUpdate
     {
-        $sqlWhereClause = $this->prepareWhereClauseLine($column, $operatorOrValue, $value);
-        $sqlWhereClause = $this->hasConditions()
-            ? "OR $sqlWhereClause"
-            : "WHERE $sqlWhereClause";
+        $isOperatorGiven = $value !== null;
 
+        $whereExpression = $isOperatorGiven
+            ? "$column $operatorOrValue ?"
+            : "$column = ?";
+
+        $sqlWhereClause = $this->hasConditions()
+            ? "OR $whereExpression"
+            : "WHERE $whereExpression";
+
+        $this->addParameter($isOperatorGiven ? $value : $operatorOrValue);
         $this->addSql($sqlWhereClause);
         $this->conditions[] = $sqlWhereClause;
 
         return $this;
-    }
-
-    private function prepareWhereClauseLine(string $column, $operatorOrValue, ?string $value = null): string
-    {
-        return $sqlWhereClause = $value === null
-            ? "$column = $operatorOrValue"
-            : "$column $operatorOrValue $value";
     }
 
     /**
@@ -145,9 +139,6 @@ class ORMUpdate extends ORMQuery
      */
     public function execute(): void
     {
-        $query = Database::query($this->getSql(), ...$this->getUpdatesValues());
-        $result = [];
-
-        //
+        Database::query($this->getSql(), ...$this->getParameters());
     }
 }

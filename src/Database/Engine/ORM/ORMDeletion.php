@@ -19,87 +19,86 @@ use MvcLite\Models\Engine\ModelCollection;
 class ORMDeletion extends ORMQuery
 {
     private const BASE_SQL_QUERY_TEMPLATE
-        = "DELETE FROM ";
+        = "DELETE FROM %s";
 
-    private const SQL_VALUES_EXPRESSION_TEMPLATE
-        = "(%s) VALUES (%s)";
+    /** Given WHERE clauses. */
+    private array $conditions;
 
-    private array $values;
-
-    public function __construct(string $modelClass, array $values)
+    public function __construct(string $modelClass)
     {
         parent::__construct($modelClass);
 
-        $this->values = $values;
+        $this->conditions = [];
 
         $sqlQueryBase = sprintf(self::BASE_SQL_QUERY_TEMPLATE,
             ($this->getModelClass())::getTableName());
 
         $this->addSql($sqlQueryBase);
+    }
 
-        $this->prepareSqlValuesExpression();
+    public function getConditions(): array
+    {
+        return $this->conditions;
+    }
+
+    public function hasConditions(): bool
+    {
+        return count($this->getConditions());
     }
 
     /**
-     * @return array Values to insert
+     * Add a where condition clause to current query.
+     *
+     * @param string $column Column concerned by condition
+     * @param string $operatorOrValue Condition operator if there are three arguments;
+     *                                else condition value
+     * @param string|null $value Condition value if there are three arguments;
+     *                           else NULL
+     * @return $this Current ORM query instance
      */
-    public function getValues(): array
+    public function where(string $column, string $operatorOrValue, ?string $value = null): ORMDeletion
     {
-        return $this->values;
+        $isOperatorGiven = $value !== null;
+
+        $whereExpression = $isOperatorGiven
+            ? "$column $operatorOrValue ?"
+            : "$column = ?";
+
+        $sqlWhereClause = $this->hasConditions()
+            ? "AND $whereExpression"
+            : "WHERE $whereExpression";
+
+        $this->addParameter($isOperatorGiven ? $value : $operatorOrValue);
+        $this->addSql($sqlWhereClause);
+        $this->conditions[] = $sqlWhereClause;
+
+        return $this;
     }
 
-    /**
-     * @return bool If there are values to insert
-     */
-    public function hasValues(): bool
+    public function orWhere(string $column, mixed $operatorOrValue, mixed $value = null): ORMDeletion
     {
-        return count($this->getValues());
-    }
+        $isOperatorGiven = $value !== null;
 
-    public function getColumns(): array
-    {
-        return array_keys($this->getValues());
-    }
+        $whereExpression = $isOperatorGiven
+            ? "$column $operatorOrValue ?"
+            : "$column = ?";
 
-    public function getColumnsValues(): array
-    {
-        return array_values($this->getValues());
-    }
+        $sqlWhereClause = $this->hasConditions()
+            ? "OR $whereExpression"
+            : "WHERE $whereExpression";
 
-    private function prepareSqlValuesExpression(): void
-    {
-        $expression = sprintf(self::SQL_VALUES_EXPRESSION_TEMPLATE,
-                              implode(", ", $this->getColumns()),
-                              $this->getAnonymousParametersByArray($this->getColumnsValues()));
+        $this->addParameter($isOperatorGiven ? $value : $operatorOrValue);
+        $this->addSql($sqlWhereClause);
+        $this->conditions[] = $sqlWhereClause;
 
-        $this->addSql($expression);
-    }
-
-    private function getAnonymousParametersByArray(array $array): string
-    {
-        $expression = "";
-
-        for ($_ = 0; $_ < count($array); $_++)
-        {
-            $expression .= $_ == 0
-                ? "?"
-                : ", ?";
-        }
-
-        return $expression;
+        return $this;
     }
 
     /**
      * Send generated SQL query by using Database class.
      */
-    public function execute(): Model
+    public function execute(): void
     {
-        $query = Database::query($this->getSql(), ...$this->getColumnsValues());
-        $lastId = Database::query("SELECT LAST_INSERT_ID() as lastId")
-            ->get()["lastId"];
-
-        return $this->getModelClass()::getById($lastId)
-            ->execute()
-            ->get(0);
+        Database::query($this->getSql(), ...$this->getParameters());
     }
 }

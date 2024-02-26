@@ -21,10 +21,13 @@ class ORMQuery
     /** Generated SQL query. */
     private string $sql;
 
+    private array $parameters;
+
     public function __construct(string $modelClass)
     {
         $this->modelClass = $modelClass;
         $this->sql = "";
+        $this->parameters = [];
     }
 
     /**
@@ -41,6 +44,16 @@ class ORMQuery
     public function getSql(): string
     {
         return $this->sql;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    public function addParameter(mixed $value): void
+    {
+        $this->parameters[] = $value;
     }
 
     /**
