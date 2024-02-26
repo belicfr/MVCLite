@@ -2,7 +2,7 @@
 
 namespace MvcLite\Models;
 
-use MvcLite\Models\Engine\Model;
+use MvcliteCore\Models\Model;
 
 class User extends Model
 {

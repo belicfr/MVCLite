@@ -2,10 +2,10 @@
 
 namespace MvcLite\Middlewares;
 
-use MvcLite\Engine\DevelopmentUtilities\Debug;
-use MvcLite\Engine\Session\Session;
-use MvcLite\Middlewares\Engine\Middleware;
-use MvcLite\Router\Engine\Redirect;
+use MvcliteCore\Engine\DevelopmentUtilities\Debug;
+use MvcliteCore\Engine\Session\Session;
+use MvcliteCore\Middlewares\Middleware;
+use MvcliteCore\Router\Redirect;
 
 class GuestMiddleware extends Middleware
 {

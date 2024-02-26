@@ -6,8 +6,6 @@
  */
 
 
-use MvcLite\Controllers\IndexController;
-use MvcLite\Controllers\MessagesController;
-use MvcLite\Router\Engine\Router;
+use MvcliteCore\Router\Router;
 
 // Create your own routes!

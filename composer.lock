@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "508905cf0dfd03307f244d60673d1597",
+    "content-hash": "625959a198ba2c9d790253a022c096e2",
     "packages": [
+        {
+            "name": "belicfr/mvclite-core",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/belicfr/mvclite-core.git",
+                "reference": "31ffb2939adaf9011de39725157f86fee6a0315c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/belicfr/mvclite-core/zipball/31ffb2939adaf9011de39725157f86fee6a0315c",
+                "reference": "31ffb2939adaf9011de39725157f86fee6a0315c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "symfony/string": "^7.0",
+                "twig/twig": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MvcliteCore\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan",
+                    "email": "96206878+belicfr@users.noreply.github.com"
+                }
+            ],
+            "description": "MVCLite core part",
+            "support": {
+                "issues": "https://github.com/belicfr/mvclite-core/issues",
+                "source": "https://github.com/belicfr/mvclite-core/tree/1.1.2"
+            },
+            "time": "2024-02-26T20:54:24+00:00"
+        },
         {
             "name": "symfony/polyfill-ctype",
             "version": "v1.29.0",
@@ -620,9 +662,7 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {
-        "ext-pdo": "*"
-    },
+    "platform": [],
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
 }
