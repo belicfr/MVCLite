@@ -71,4 +71,14 @@ class ModelCollection
 
         return json_decode(json_encode($public));
     }
+
+    /**
+     * @param int $index Model index in collection
+     * @return Model|null Model object if exists;
+     *                    else NULL
+     */
+    public function get(int $index): ?Model
+    {
+        return $this->models[$index] ?? null;
+    }
 }
