@@ -42,36 +42,16 @@ class ORMSelection extends ORMQuery
     {
         parent::__construct($modelClass, $columns);
 
+        $sqlQueryBase = sprintf(self::BASE_SQL_QUERY_TEMPLATE,
+            parent::getImplodedColumns(),
+            ($this->getModelClass())::getTableName());
+
+        $this->addSql($sqlQueryBase);
+
         $this->relationships = [];
         $this->conditions = [];
         $this->ordering = [];
         $this->limit = null;
-    }
-
-    /**
-     * @return string Generated SQL query
-     */
-    public function getSqlQuery(): string
-    {
-        $sql = sprintf(self::BASE_SQL_QUERY_TEMPLATE,
-            parent::getImplodedColumns(),
-            ($this->getModelClass())::getTableName());
-
-        if ($this->hasConditions())
-        {
-            $conditions = implode(" AND ", $this->getConditions());
-            $clause = sprintf(self::WHERE_CLAUSE_TEMPLATE, $conditions);
-            $sql .= " $clause";
-        }
-
-        if ($this->hasOrdering())
-        {
-            $ordering = implode(', ', $this->getOrdering());
-            $clause = sprintf(self::ORDER_BY_CLAUSE_TEMPLATE, $ordering);
-            $sql .= " $clause";
-        }
-
-        return $sql;
     }
 
     /**
@@ -141,6 +121,11 @@ class ORMSelection extends ORMQuery
             ? "$column = $operatorOrValue"
             : "$column $operatorOrValue $value";
 
+        $sqlWhereClause = $this->hasConditions()
+            ? "AND $sqlWhereClause"
+            : "WHERE $sqlWhereClause";
+
+        $this->addSql($sqlWhereClause);
         $this->conditions[] = $sqlWhereClause;
 
         return $this;
@@ -149,15 +134,20 @@ class ORMSelection extends ORMQuery
     /**
      * Add an order by clause to current query.
      *
-     * @param array ...$columnsRules
+     * @param string $column
+     * @param string $order
      * @return $this Current ORM query instance
      */
-    public function orderBy(array ...$columnsRules): ORMSelection
+    public function orderBy(string $column, string $order = "ASC"): ORMSelection
     {
-        foreach ($columnsRules as $rule)
-        {
-            $this->ordering[] = "$rule[0] $rule[1]";
-        }
+        $order = strtoupper($order);
+        
+        $orderingClause = $this->hasOrdering()
+            ? ", $column $order"
+            : "ORDER BY $column $order";
+
+        $this->addSql($orderingClause);
+        $this->ordering[] = $orderingClause;
 
         return $this;
     }
@@ -190,7 +180,7 @@ class ORMSelection extends ORMQuery
      */
     public function execute(): ModelCollection
     {
-        $query = Database::query($this->getSqlQuery());
+        $query = Database::query($this->getSql());
         $result = [];
 
         while ($line = $query->get())
