@@ -140,35 +140,40 @@ class ORMSelection extends ORMQuery
      */
     public function where(string $column, string $operatorOrValue, ?string $value = null): ORMSelection
     {
-        $sqlWhereClause = $this->prepareWhereClauseLine($column, $operatorOrValue, $value);
-        $sqlWhereClause = $this->hasConditions()
-            ? "AND $sqlWhereClause"
-            : "WHERE $sqlWhereClause";
+        $isOperatorGiven = $value !== null;
 
+        $whereExpression = $isOperatorGiven
+            ? "$column $operatorOrValue ?"
+            : "$column = ?";
+
+        $sqlWhereClause = $this->hasConditions()
+            ? "AND $whereExpression"
+            : "WHERE $whereExpression";
+
+        $this->addParameter($isOperatorGiven ? $value : $operatorOrValue);
         $this->addSql($sqlWhereClause);
         $this->conditions[] = $sqlWhereClause;
 
         return $this;
     }
 
-    public function orWhere(string $column, string $operatorOrValue, ?string $value = null): ORMSelection
+    public function orWhere(string $column, mixed $operatorOrValue, mixed $value = null): ORMSelection
     {
-        $sqlWhereClause = $this->prepareWhereClauseLine($column, $operatorOrValue, $value);
-        $sqlWhereClause = $this->hasConditions()
-            ? "OR $sqlWhereClause"
-            : "WHERE $sqlWhereClause";
+        $isOperatorGiven = $value !== null;
 
+        $whereExpression = $isOperatorGiven
+            ? "$column $operatorOrValue ?"
+            : "$column = ?";
+
+        $sqlWhereClause = $this->hasConditions()
+            ? "OR $whereExpression"
+            : "WHERE $whereExpression";
+
+        $this->addParameter($isOperatorGiven ? $value : $operatorOrValue);
         $this->addSql($sqlWhereClause);
         $this->conditions[] = $sqlWhereClause;
 
         return $this;
-    }
-
-    private function prepareWhereClauseLine(string $column, $operatorOrValue, ?string $value = null): string
-    {
-        return $sqlWhereClause = $value === null
-            ? "$column = $operatorOrValue"
-            : "$column $operatorOrValue $value";
     }
 
     /**
@@ -220,7 +225,7 @@ class ORMSelection extends ORMQuery
      */
     public function execute(): ModelCollection
     {
-        $query = Database::query($this->getSql());
+        $query = Database::query($this->getSql(), ...$this->getParameters());
         $result = [];
 
         while ($line = $query->get())
