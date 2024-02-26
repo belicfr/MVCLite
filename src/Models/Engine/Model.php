@@ -92,6 +92,19 @@ class Model implements JsonSerializable
         return new ORMSelection(static::class, $columns);
     }
 
+    public static function getById(int $id, string ...$columns): ORMSelection
+    {
+        if (!count($columns))
+        {
+            $columns = ['*'];
+        }
+
+        $ormClause = new ORMSelection(static::class, $columns);
+        $ormClause->where("id", $id);
+
+        return $ormClause;
+    }
+
     /*
      * ************ JSON SERIALIZATION ************
      */
