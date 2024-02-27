@@ -9,3 +9,4 @@ Writerside/*
 Writerside2/
 .phpdoc/
 build/
+composer.lock
