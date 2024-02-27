@@ -23,3 +23,9 @@ const AUTHENTIFICATION_COLUMNS = [
     "password"  => "password",
 
 ];
+
+const API_COLUMNS = [
+
+    "keys_table"    => "api_keys",
+
+];
