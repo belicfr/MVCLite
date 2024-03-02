@@ -100,7 +100,7 @@ public function __construct()
 *MVCLite* uses the **Twig** templating engine for separating logic from presentation in your views. You can create your views in the `src/Views` directory and then render them in your **controllers**.
 
 ```php
-View::render('view.twig', ['data' => $data]);
+View::render('View', ['data' => $data]);
 ```
 
 ### Twig
@@ -119,7 +119,7 @@ You can use the **Twig** templating engine to create your views. Here's an examp
 {% else %}
     <p>{{ content2 }}</p>
 {% endif %}
-{{ include('footer.twig', {'data': data}) }}
+{{ include('Footer.twig', {'data': data}) }}
 </body>
 </html>
 ```
