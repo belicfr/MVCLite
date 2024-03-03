@@ -29,3 +29,9 @@ const API_COLUMNS = [
     "keys_table"    => "api_keys",
 
 ];
+
+const PREFERENCES = [
+
+    "render_mvclite_exceptions"     => true,
+
+];
