@@ -28,7 +28,6 @@ const MODEL_TEMPLATE = "<?php
 namespace MvcLite\Models%s;
 
 use MvcliteCore\Models\Model;
-
 class %s extends Model
 {
     public function __construct() 
@@ -36,6 +35,35 @@ class %s extends Model
         parent::__construct();
     }
 }";
+
+const VALIDATOR_TEMPLATE = '<?php
+
+namespace MvcLite\Validators%s;
+
+use MvcliteCore\Engine\Security\Validator;
+use MvcliteCore\Router\Request;
+
+class %s extends Validator
+{
+    public function __construct(Request $request) 
+    {
+        parent::__construct($request);
+    }
+    
+    public function rule(string $input, ?string $customError = null): %s
+    {
+        $defaultError = "This is the default error.";
+        
+        $hasFailed = 1 == 2;
+        
+        if ($hasFailed)
+        {
+            $this->addError("rule", $input, $customError ?? $defaultError);
+        }
+        
+        return $this;
+    }
+}';
 
 if ($argc < 2)
 {
@@ -48,11 +76,15 @@ switch ($instruction)
 {
     case "new:controller":  //  php project new:controller MyController
         newConstructor();
-        break;
+        die;
 
-    case "new:model":
+    case "new:model":       //  php project new:model MyModel
         newModel();
-        break;
+        die;
+
+    case "new:validator":   //  php project new:validator MyValidator
+        newValidator();
+        die;
 
     default:
         die;
@@ -144,6 +176,50 @@ function newModel(): void
     die;
 }
 
+function newValidator(): void
+{
+    global $argc, $argv;
+
+    if ($argc < 3)
+    {
+        errorNoneValidatorName();
+    }
+
+    $validatorName = $argv[2];
+    $validatorSubpathSplit = explode('/', $validatorName);
+    $validatorFilenameSubPath
+        = implode('/', array_slice($validatorSubpathSplit, 0, -1));
+    $validatorFilenameSubPathWithBackslashes = count($validatorSubpathSplit) > 1
+        ? '\\'
+        : '';
+    $validatorFilenameSubPathWithBackslashes
+        .= str_replace('/', '\\', $validatorFilenameSubPath);
+    $validatorFilenameWithoutExtension = end($validatorSubpathSplit);
+    $validatorParentPath = "src/Validators/$validatorFilenameSubPath";
+    $validatorFilename = "$validatorFilenameWithoutExtension.php";
+
+    if (!is_dir($validatorParentPath) && !mkdir($validatorParentPath, recursive: true))
+    {
+        errorCannotCreateValidator($validatorName);
+    }
+
+    $validator = fopen($validatorParentPath . '/' . $validatorFilename, 'w');
+    $validatorContent = sprintf(VALIDATOR_TEMPLATE,
+                            $validatorFilenameSubPathWithBackslashes,
+                            $validatorFilenameWithoutExtension,
+                            $validatorFilenameWithoutExtension);
+
+    if (!$validator || fwrite($validator, $validatorContent) === false)
+    {
+        errorCannotCreateValidator($validatorName);
+    }
+
+    fclose($validator);
+
+    echo "$validatorName validator successfully created.";
+    die;
+}
+
 function errorCannotCreateController(string $controllerName): void
 {
     echo "[ERROR] $controllerName controller cannot be created.";
@@ -165,6 +241,18 @@ function errorCannotCreateModel(string $modelName): void
 function errorNoneModelName()
 {
     echo "[ERROR] No name has been given for the model to be created.";
+    die;
+}
+
+function errorNoneValidatorName()
+{
+    echo "[ERROR] No name has been given for the validator to be created.";
+    die;
+}
+
+function errorCannotCreateValidator(string $validatorName): void
+{
+    echo "[ERROR] $validatorName validator cannot be created.";
     die;
 }
 
