@@ -28,7 +28,15 @@ if (!isset($_GET["route"]))
     $error->render();
 }
 
-$route = Router::getRouteByPath('/' . $_GET["route"]);
+$routePath = filter_var($_GET["route"], FILTER_SANITIZE_URL);
+$routePathLastCharacter = $routePath[strlen($routePath) - 1];
+
+if ($routePathLastCharacter == '/')
+{
+    $routePath[strlen($routePath) - 1] = " ";
+}
+
+$route = Router::getRouteByPath('/' . trim($routePath));
 Router::useRoute($route);
 
 (new Delivery())
