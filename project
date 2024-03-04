@@ -1,5 +1,10 @@
 <?php
 
+require_once "vendor/autoload.php";
+
+require_once "config.php";
+require_once "src/Database/connection.php";
+
 const CONTROLLER_TEMPLATE = "<?php
 
 namespace MvcLite\Controllers%s;
@@ -85,6 +90,10 @@ switch ($instruction)
     case "new:validator":   //  php project new:validator MyValidator
         newValidator();
         die;
+
+    case "db:migrate":
+        migrate();
+        break;
 
     default:
         die;
@@ -219,6 +228,29 @@ function newValidator(): void
     echo "$validatorName validator successfully created.";
     die;
 }
+
+function migrate(): void
+{
+    define("MIGRATIONS_FOLDER", "src/Database/Migrations/");
+
+    $migrationFiles = scandir(MIGRATIONS_FOLDER);
+
+    if (count($migrationFiles) < 3)
+    {
+        return;
+    }
+
+    $migrationFiles = array_slice($migrationFiles, 2);
+
+    foreach ($migrationFiles as $element)
+    {
+        $elementPath = MIGRATIONS_FOLDER . $element;
+
+        include $elementPath;
+    }
+}
+
+/* ===  ERRORS  === */
 
 function errorCannotCreateController(string $controllerName): void
 {
