@@ -5,7 +5,7 @@
  * MVCLite by belicfr
  *
  * Please edit the connection information
- * to use your databse properly.
+ * to use your database properly.
  */
 
 use MvcliteCore\Database\Database;
