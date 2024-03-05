@@ -16,8 +16,6 @@ if (!isset($_SESSION[Delivery::DELIVER_POST_KEY]))
         ->save();
 }
 
-\MvcliteCore\Engine\DevelopmentUtilities\Debug::dump(Delivery::get());
-
 require_once "src/Database/connection.php";
 
 require_once "src/Router/reserved.php";
