@@ -13,10 +13,18 @@ use MvcliteCore\Database\Exceptions\FailedConnectionToDatabaseException;
 
 const DATABASE_CONNECTION_ERROR = "Database connection error";
 
-$db = (new Database(DATABASE_CREDENTIALS))->attemptConnection();
+$db = (new Database(DATABASE_CREDENTIALS))
+    ->attemptConnection();
 
 if (!$db)
 {
     $error = new FailedConnectionToDatabaseException(DATABASE_CONNECTION_ERROR);
+
+    if (isset($argc))
+    {
+        echo $error->getMessage();
+        die;
+    }
+
     $error->render();
 }
