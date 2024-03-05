@@ -3,7 +3,6 @@
 require_once "vendor/autoload.php";
 
 require_once "config.php";
-require_once "src/Database/connection.php";
 
 const CONTROLLER_TEMPLATE = "<?php
 
@@ -91,7 +90,7 @@ switch ($instruction)
         newValidator();
         die;
 
-    case "db:migrate":
+    case "db:migrate":      //  php project db:migrate
         migrate();
         break;
 
@@ -231,6 +230,8 @@ function newValidator(): void
 
 function migrate(): void
 {
+    useDatabase();
+
     define("MIGRATIONS_FOLDER", "src/Database/Migrations/");
 
     $migrationFiles = scandir(MIGRATIONS_FOLDER);
@@ -292,4 +293,9 @@ function errorNoneInstruction()
 {
     echo "[ERROR] None instruction is given.";
     die;
+}
+
+function useDatabase()
+{
+    require_once "src/Database/connection.php";
 }
