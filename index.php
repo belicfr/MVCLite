@@ -16,6 +16,8 @@ if (!isset($_SESSION[Delivery::DELIVER_POST_KEY]))
         ->save();
 }
 
+\MvcliteCore\Engine\DevelopmentUtilities\Debug::dump(Delivery::get());
+
 require_once "src/Database/connection.php";
 
 require_once "src/Router/reserved.php";
@@ -29,15 +31,19 @@ if (!isset($_GET["route"]))
 }
 
 $routePath = filter_var($_GET["route"], FILTER_SANITIZE_URL);
-$routePathLastCharacter = $routePath[strlen($routePath) - 1];
+$routePathLength = strlen($routePath);
 
-if ($routePathLastCharacter == '/')
+if ($routePathLength)
 {
-    $routePath[strlen($routePath) - 1] = " ";
+    $routePathLastCharacter = $routePath[$routePathLength - 1];
+
+    if ($routePathLastCharacter == '/') {
+        $routePath[strlen($routePath) - 1] = " ";
+    }
 }
 
 $route = Router::getRouteByPath('/' . trim($routePath));
-Router::useRoute($route);
+$routeUsing = Router::useRoute($route);
 
 (new Delivery())
     ->save();
