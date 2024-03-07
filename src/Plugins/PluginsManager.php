@@ -2,7 +2,6 @@
 
 namespace MvcLite\Plugins;
 
-use MvcliteCore\Engine\DevelopmentUtilities\Debug;
 use MvcliteCore\Plugins\Exceptions\NotFoundPluginException;
 use MvcliteCore\Plugins\Exceptions\PluginAlreadyExistsException;
 
