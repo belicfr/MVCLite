@@ -10,6 +10,6 @@ use MvcLite\Plugins\Test\TestPlugin;
 
 return [
 
-    "test" => TestPlugin::class,
+    TestPlugin::class,
 
 ];
