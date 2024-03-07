@@ -15,11 +15,11 @@ class PluginsManager
      */
     public static function loadPlugins(): void
     {
-        foreach (self::getEnabledPlugins() as $pluginName => $plugin)
+        foreach (self::getEnabledPlugins() as $plugin)
         {
             if (!self::isPluginExists($plugin))
             {
-                $error = new NotFoundPluginException($pluginName, $plugin);
+                $error = new NotFoundPluginException($plugin);
                 $error->render();
             }
 
@@ -28,6 +28,9 @@ class PluginsManager
                 $error = new PluginAlreadyExistsException($plugin);
                 $error->render();
             }
+
+            $pluginName = (new $plugin())
+                ->getName();
 
             self::$loadedPlugins[$pluginName] = $plugin;
         }
@@ -57,7 +60,7 @@ class PluginsManager
      */
     public static function isPluginLoaded(string $plugin): bool
     {
-        return in_array($plugin, array_values(self::getLoadedPlugins()));
+        return in_array($plugin, self::getLoadedPlugins());
     }
 
     /**
