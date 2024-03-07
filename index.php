@@ -7,14 +7,15 @@ use MvcliteCore\Engine\InternalResources\Delivery;
 use MvcliteCore\Router\Exceptions\NoneRouteException;
 use MvcliteCore\Router\Router;
 
+PluginsManager::loadEvent("onStarted");
+
 require_once "vendor/autoload.php";
+
+PluginsManager::loadEvent("onBeforeConfigLoad");
 
 require_once "config.php";
 
-PluginsManager::loadPlugins();
-
-/* On Started Plugins Event */
-PluginsManager::loadEvent("onStarted");
+PluginsManager::loadEvent("onAfterConfigLoad");
 
 if (!isset($_SESSION[Delivery::DELIVER_POST_KEY]))
 {
@@ -46,11 +47,17 @@ if ($routePathLength)
     }
 }
 
-/* Before Router Plugins Event */
-PluginsManager::loadEvent("beforeRouter");
+PluginsManager::loadEvent("onBeforeRouter");
 
 $route = Router::getRouteByPath('/' . trim($routePath));
+
+PluginsManager::loadEvent("onAfterRouter");
+
 Router::useRoute($route);
+
+PluginsManager::loadEvent("onBeforeDeliveryReset");
 
 (new Delivery())
     ->save();
+
+PluginsManager::loadEvent("onAfterDeliveryReset");
