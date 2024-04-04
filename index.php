@@ -2,14 +2,14 @@
 
 session_start();
 
+require_once "vendor/autoload.php";
+
 use MvcLite\Plugins\PluginsManager;
 use MvcliteCore\Engine\InternalResources\Delivery;
 use MvcliteCore\Router\Exceptions\NoneRouteException;
 use MvcliteCore\Router\Router;
 
 PluginsManager::loadEvent("onStarted");
-
-require_once "vendor/autoload.php";
 
 PluginsManager::loadEvent("onBeforeConfigLoad");
 
